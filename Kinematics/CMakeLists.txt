@@ -1,7 +1,5 @@
 project(TestKinematics)
 
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g")
 #boost
 find_package(Boost COMPONENTS system thread filesystem)
 
@@ -20,6 +18,6 @@ link_directories(
 	${Boost_LIBRARY_DIR}
 )
 
-add_executable(TestKinematics ForwardKinematics.cpp Link.cpp testKinematics.cpp ForwardKinematics.h Link.h LinkParameter.h)
+add_executable(TestKinematics Kinematics.cpp Link.cpp testKinematics.cpp Kinematics.h Link.h LinkParameter.h)
 
 target_link_libraries(TestKinematics ${Boost_LIBRARIES})
