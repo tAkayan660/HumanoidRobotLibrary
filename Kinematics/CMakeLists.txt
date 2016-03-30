@@ -1,11 +1,9 @@
+cmake_minimum_required(VERSION 2.8)
+
 project(TestKinematics)
 
-#boost
 find_package(Boost COMPONENTS system thread filesystem)
-
-#Eigen
-set(EIGEN_DIR ${EIGEN_DIR} CACHE PATH "The directory of the Eigen library")
-set(EIGEN_INCLUDE_DIRS ${EIGEN_DIR})
+find_package(Eigen3 REQUIRED)
 
 include_directories(
 	${BOOST_INCLUDE_DIRS}
