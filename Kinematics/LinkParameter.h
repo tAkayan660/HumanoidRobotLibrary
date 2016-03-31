@@ -106,13 +106,13 @@ static const double LinkPos[LEG_JOINT_NUM][3] = {
 static const double LinkPos[LEG_JOINT_NUM][3] = {
 	{0.0f, 0.0f, 0.0f},		//WAIST
 	{0.0f, -50.0f, 0.0f},	//HIP_YAW_L
-	{0.0f, 0.0f, -40.0f},	//HIP_ROLL_L
+	{0.0f, 0.0f, -0.0f},	//HIP_ROLL_L
 	{0.0f, 0.0f, 0.0f},		//HIP_PITCH_L
 	{0.0f, 0.0f, -100.0f},	//KNEE_PITCH_L
 	{0.0f, 0.0f, -100.0f},	//FOOT_PITCH_L
 	{0.0f, 0.0f, 0.0f},		//FOOT_ROLL_L
 	{0.0f, 50.0f, 0.0f},	//HIP_YAW_R
-	{0.0f, 0.0f, -40.0f},	//HIP_ROLL_R
+	{0.0f, 0.0f, -0.0f},	//HIP_ROLL_R
 	{0.0f, 0.0f, 0.0f},		//HIP_PITCH_R
 	{0.0f, 0.0f, -100.0f},	//KNEE_PITCH_R
 	{0.0f, 0.0f, -100.0f},	//FOOT_PITCH_R
