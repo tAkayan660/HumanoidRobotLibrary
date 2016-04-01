@@ -21,7 +21,7 @@ int main(int argc, char* argv[])
 
 	//Set Target Position of End Link
 	Link target_Lfoot;
-	const float move_eef=20.0;
+	const float move_eef=40.0;
 	target_Lfoot.p(0) = kine.ulink[FOOT_ROLL_L].p(0);
 	target_Lfoot.p(1)= kine.ulink[FOOT_ROLL_L].p(1);
 	target_Lfoot.p(2) = kine.ulink[FOOT_ROLL_L].p(2)+move_eef;
