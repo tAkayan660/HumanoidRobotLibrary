@@ -5,6 +5,7 @@ using namespace MotionControl;
 
 int main(int argc, char* argv[])
 {
+	//Initialize
 	Link ulink[LEG_JOINT_NUM];
 	SetJointInfo(ulink);
 	Kinematics kine(ulink);
