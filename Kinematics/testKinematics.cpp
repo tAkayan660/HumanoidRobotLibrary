@@ -15,7 +15,7 @@ int main(int argc, char* argv[])
 		kien.ulink[i].q = 0.0f;
 	kine.ulink[HIP_PITCH_L].q = -20 * pi / 180.0f;
 	kine.ulink[KNEE_PITCH_L].q = 40 * pi / 180.0f;
-	kine.ulink[FOOT_PITCH_L].q _ -20 * pi / 180.0f;
+	kine.ulink[FOOT_PITCH_L].q = -20 * pi / 180.0f;
 
 	//Calculation Forward Kinematics
 	kine.calcForwardKinematics(WAIST);
