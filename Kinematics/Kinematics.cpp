@@ -94,7 +94,12 @@ bool Kinematics::calcInverseKinematics(int to, Link target)
 		J = calcJacobian(idx);
 		err = calcVWerr(target, ulink[to]);
 		if(err.norm() < eps) return true;
-		dq = lambda * (J.inverse() * err);
+		
+		if(idx == 6)
+			dq = lambda * (J.inverse() * err);
+		else
+			dq = lambda * ((J.transpose()*J).inverse()*J.transpose()*err);
+
 		for(size_t nn=0;nn<idx.size();nn++)
 		{
 			int j = idx[nn];
