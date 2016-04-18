@@ -63,12 +63,13 @@ enum
 	ARM_JOINT_NUM
 };
 
-static const int parent[LEG_JOINT_NUM] = {-1,0,1,2,3,4,5,6,7,0,9,10,11,12,13,14,15};
-static const int child[LEG_JOINT_NUM] = {1,2,3,4,5,6,7,8,-1,10,11,12,13,14,15,16,-1};
-static const int sister[LEG_JOINT_NUM] = {-1,9,-1,-1,-1,-1,-1,-1,-1,1,-1,-1,-1,-1,-1,-1,-1};
+static const int parent[ARM_JOINT_NUM] = {-1,0,1,2,3,4,5,6,7,0,9,10,11,12,13,14,15};
+static const int child[ARM_JOINT_NUM] = {1,2,3,4,5,6,7,8,-1,10,11,12,13,14,15,16,-1};
+static const int sister[ARM_JOINT_NUM] = {-1,9,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1};
 
-static const double LinkAxis[LEG_JOINT_NUM][3] = {
+static const double LinkAxis[ARM_JOINT_NUM][3] = {
 	{0,0,0},
+
 	{0,0,1},
 	{0,1,0},
 	{1,0,0},
@@ -77,6 +78,7 @@ static const double LinkAxis[LEG_JOINT_NUM][3] = {
 	{0,0,1},
 	{1,0,0},
 	{0,1,0},
+
 	{0,0,1},
 	{0,1,0},
 	{1,0,0},
@@ -87,24 +89,24 @@ static const double LinkAxis[LEG_JOINT_NUM][3] = {
 	{0,1,0},
 };
 
-static const double LinkPos[LEG_JOINT_NUM][3] = {
+static const double LinkPos[ARM_JOINT_NUM][3] = {
 	{6.0f, 0.0f, 1484.0f},	
 		
-	{0.0f, -87.5f, 0.0f},
+	{6.0f, -87.5f, 1484.0f},
 	{0.0f, -72.8f, 0.0f},
 	{0.0f, -56.9f, 0.0f},
 	{0.0f, 0.0f, -196.5f},
 	{0.0f, 0.0f, -126.0f},
-	{0.0f, 0.0f, -253.5f},
+	{0.0f, 0.0f, -127.5f},
 	{0.0f, 0.0f, -146.0f},
 	{0.0f, 0.0f, -40.0f},
 
-	{0.0f, 87.5f, 0.0f},
+	{6.0f, 87.5f, 1484.0f},
 	{0.0f, 72.8f, 0.0f},
 	{0.0f, 56.9f, 0.0f},
 	{0.0f, 0.0f, -196.5f},
 	{0.0f, 0.0f, -126.0f},
-	{0.0f, 0.0f, -253.5},
+	{0.0f, 0.0f, -127.5},
 	{0.0f, 0.0f, -146.0f},
 	{0.0f, 0.0f ,-40.0f},
 };

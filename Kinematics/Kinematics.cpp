@@ -95,7 +95,7 @@ bool Kinematics::calcInverseKinematics(int to, Link target)
 		err = calcVWerr(target, ulink[to]);
 		if(err.norm() < eps) return true;
 		
-		if(idx == 6)
+		if(idx.size() == 6)
 			dq = lambda * (J.inverse() * err);
 		else
 			dq = lambda * ((J.transpose()*J).inverse()*J.transpose()*err);
