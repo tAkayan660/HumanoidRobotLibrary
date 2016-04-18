@@ -4,7 +4,7 @@ using namespace MotionControl;
 
 extern "C" void SetJointInfo(struct Link *link)
 {
-	for(int i=0;i<ARM_JOINT_NUM;i++)
+	for(int i=0;i<LEG_JOINT_NUM;i++)
 	{
 		link[i].joint_name = joint_name[i];
 		link[i].parent = parent[i];

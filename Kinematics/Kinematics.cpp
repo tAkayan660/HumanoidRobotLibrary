@@ -64,7 +64,7 @@ MatrixXd Kinematics::calcJacobian(vector<int> idx)
 {
 	size_t jsize = idx.size();
 	Matrix<double,3,1> target = ulink[idx.back()].p;
-	MatrixXd J = MatrixXd::Zero(6,jsize);
+	MatrixXd J = MatrixXd::Zero(6,6);
 
 	for(size_t i=0;i<jsize;i++)
 	{
@@ -74,7 +74,7 @@ MatrixXd Kinematics::calcJacobian(vector<int> idx)
 		J(0,i) = b(0); J(1,i) = b(1); J(2,i) = b(2);
 		J(3,i) = a(0); J(4,i) = a(1); J(5,i) = a(2);
 	}
-
+	
 	return J;
 }
 
@@ -82,24 +82,20 @@ bool Kinematics::calcInverseKinematics(int to, Link target)
 {
 	const double lambda = 0.5;
 	const int iteration = 50;
+	size_t jsize;
 	vector<int> idx;
-	Matrix<double,6,1> dq;
-	Matrix<double,6,6> J(Matrix<double,6,6>::Zero());
 	Matrix<double,6,1> err;
 
 	calcForwardKinematics(WAIST);
 	idx = FindRoute(to);
+	MatrixXd J = Matrix<double,6,6>::Zero();
+	MatrixXd dq = Matrix<double,6,1>::Zero();
 	for(int n=0;n<iteration;n++)
 	{
 		J = calcJacobian(idx);
 		err = calcVWerr(target, ulink[to]);
 		if(err.norm() < eps) return true;
-		
-		if(idx.size() == 6)
-			dq = lambda * (J.inverse() * err);
-		else
-			dq = lambda * ((J.transpose()*J).inverse()*J.transpose()*err);
-
+		dq = lambda * (J.inverse() * err);
 		for(size_t nn=0;nn<idx.size();nn++)
 		{
 			int j = idx[nn];
