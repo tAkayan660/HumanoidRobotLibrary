@@ -35,6 +35,27 @@ static const string joint_name[] = {
 	"LLEG_JOINT3",
 	"LLEG_JOINT4",
 	"LLEG_JOINT5",
+	"CHEST_JOINT0",
+	"CHEST_JOINT1",
+	"CHEST_JOINT2",
+	"HEAD_JOINT0",
+	"HEAD_JOINT1",
+	"RARM_JOINT0",
+	"RARM_JOINT1",
+	"RARM_JOINT2",
+	"RARM_JOINT3",
+	"RARM_JOINT4",
+	"RARM_JOINT5",
+	"RARM_JOINT6",
+	"RARM_JOINT7",
+	"LARM_JOINT0",
+	"LARM_JOINT1",
+	"LARM_JOINT2",
+	"LARM_JOINT3",
+	"LARM_JOINT4",
+	"LARM_JOINT5",
+	"LARM_JOINT6",
+	"LARM_JOINT7",
 };
 
 enum
@@ -52,16 +73,39 @@ enum
 	LLEG_JOINT3,
 	LLEG_JOINT4,
 	LLEG_JOINT5,
-	LEG_JOINT_NUM
+	CHEST_JOINT0,
+	CHEST_JOINT1,
+	CHEST_JOINT2,
+	HEAD_JOINT0,
+	HEAD_JOINT1,
+	RARM_JOINT0,
+	RARM_JOINT1,
+	RARM_JOINT2,
+	RARM_JOINT3,
+	RARM_JOINT4,
+	RARM_JOINT5,
+	RARM_JOINT6,
+	RARM_JOINT7,
+	LARM_JOINT0,
+	LARM_JOINT1,
+	LARM_JOINT2,
+	LARM_JOINT3,
+	LARM_JOINT4,
+	LARM_JOINT5,
+	LARM_JOINT6,
+	LARM_JOINT7,
+	JOINT_NUM
 };
 
-static const int parent[LEG_JOINT_NUM] = {-1,0,1,2,3,4,5,0,7,8,9,10,11};
-static const int child[LEG_JOINT_NUM] = {1,2,3,4,5,6,-1,8,9,10,11,12,-1};
-static const int sister[LEG_JOINT_NUM] = {-1,7,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1};
+static const int parent[JOINT_NUM] = {-1,0,1,2,3,4,5,0,7,8,9,10,11,0,13,14,15,16,15,18,19,20,21,22,23,24,15,26,27,28,29,30,31,32};
+static const int child[JOINT_NUM] = {1,2,3,4,5,6,-1,8,9,10,11,12,-1,14,15,16,17,-1,19,20,21,22,23,24,25,-1,27,28,29,30,31,32,33,-1};
+static const int sister[JOINT_NUM] = {-1,7,-1,-1,-1,-1,-1,13,-1,-1,-1,-1,-1,18,-1,-1,-1,-1,26,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1};
 
-static const double LinkAxis[LEG_JOINT_NUM][3] = {
+static const double LinkAxis[JOINT_NUM][3] = {
+	//WASIT
 	{0,0,0},
 
+	//RLEG
 	{0,0,1},
 	{1,0,0},
 	{0,1,0},
@@ -69,104 +113,92 @@ static const double LinkAxis[LEG_JOINT_NUM][3] = {
 	{0,1,0},
 	{1,0,0},
 
+	//LLEG
 	{0,0,1},
 	{1,0,0},
 	{0,1,0},
 	{0,1,0},
 	{0,1,0},
 	{1,0,0},
+
+	//CHEST
+	{1,0,0},
+	{0,1,0},
+	{0,0,1},
+
+	//HEAD
+	{0,0,1},
+	{0,1,0},
+
+	//RARM
+	{0,0,1},
+	{0,1,0},
+	{1,0,0},
+	{0,0,1},
+	{0,1,0},
+	{0,0,1},
+	{1,0,0},
+	{0,1,0},
+
+	//LARM
+	{0,0,1},
+	{0,1,0},
+	{1,0,0},
+	{0,0,1},
+	{0,1,0},
+	{0,0,1},
+	{1,0,0},
+	{0,1,0},
 };
 
-static const double LinkPos[LEG_JOINT_NUM][3] = {
+static const double LinkPos[JOINT_NUM][3] = {
+	//WAIST
 	{0.0f, 0.0f, 1022.5f},	
-		
+	
+	//RLEG	
 	{0.0f, -100.0f, 1032.0f},
-	{0.0f, -0.0f, -122.0f},
-	{0.0f, -0.0f, -10.0f},
-	{0.0f, 0.0f, -380.0f},
-	{0.0f, 0.0f, -380.0f},
-	{0.0f, 0.0f, -40.0f},
-
-	{6.0f, 100.0f, 1032.0f},
 	{0.0f, 0.0f, -122.0f},
 	{0.0f, 0.0f, -10.0f},
 	{0.0f, 0.0f, -380.0f},
 	{0.0f, 0.0f, -380.0f},
 	{0.0f, 0.0f, -40.0f},
-};
 
-/*
-//Accelite(RoboCup Humanoid)
-static const string joint_name[] = {
-	"WAIST",
-	"HIP_YAW_L",
-	"HIP_ROLL_L",
-	"HIP_PITCH_L",
-	"KNEE_PITCH_L",
-	"FOOT_PTICH_L",
-	"FOOT_ROLL_L",
-	"HIP_YAW_R",
-	"HIP_ROLL_R",
-	"HIP_PITCH_R",
-	"KNEE_PITCH_R",
-	"FOOT_PITCH_R",
-	"FOOT_ROLL_R",	
-};
+	//LLEG
+	{0.0f, 100.0f, 1032.0f},
+	{0.0f, 0.0f, -122.0f},
+	{0.0f, 0.0f, -10.0f},
+	{0.0f, 0.0f, -380.0f},
+	{0.0f, 0.0f, -380.0f},
+	{0.0f, 0.0f, -40.0f},
 
-enum
-{
-	WAIST=0,
-	HIP_YAW_L,
-	HIP_ROLL_L,
-	HIP_PITCH_L,
-	KNEE_PITCH_L,
-	FOOT_PITCH_L,
-	FOOT_ROLL_L,
-	HIP_YAW_R,
-	HIP_ROLL_R,
-	HIP_PITCH_R,
-	KNEE_PITCH_R,
-	FOOT_PITCH_R,
-	FOOT_ROLL_R,
-	LEG_JOINT_NUM
-};
+	//CHEST
+	{6.0f, 0.0f, 1150.5f},
+	{0.0f, 0.0f, 25.0f},
+	{0.0f, 0.0f, -308.5f},
 
-static const int parent[LEG_JOINT_NUM] = {-1,0,1,2,3,4,5,0,7,8,9,10,11};
-static const int child[LEG_JOINT_NUM] = {1,2,3,4,5,6,-1,8,9,10,11,12,-1};
-static const int sister[LEG_JOINT_NUM] = {-1,-1,7,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1};
+	//HEAD
+	{-15.0f, 0.0f, -83.5f},
+	{0.0f, 0.0f, -102.0f},
 
-static const double LinkAxis[LEG_JOINT_NUM][3] = {
-	{0,0,0},	//WASIT
-	{0,0,1},
-	{1,0,0},
-	{0,1,0},
-	{0,1,0},
-	{0,1,0},
-	{1,0,0},
-	{0,0,1},
-	{1,0,0},
-	{0,1,0},
-	{0,1,0},
-	{0,1,0},
-	{1,0,0},
-};
+	//RARM
+	{6.0f, -87.5f, 1484.0f},
+	{0.0f, -72.8f, 0.0f},
+	{0.0f, -56.9f, 0.0f},
+	{0.0f, 0.0f, -196.5f},
+	{0.0f, 0.0f, -126.0f},
+	{0.0f, 0.0f, -127.5f},
+	{0.0f, 0.0f, -146.0f},
+	{0.0f, 0.0f, -40.0f},
 
-//For test
-static const double LinkPos[LEG_JOINT_NUM][3] = {
-	{0.0f, 0.0f, 0.0f},		//WAIST
-	{0.0f, -50.0f, 0.0f},	//HIP_YAW_L
-	{0.0f, 0.0f, -0.0f},	//HIP_ROLL_L
-	{0.0f, 0.0f, 0.0f},		//HIP_PITCH_L
-	{0.0f, 0.0f, -100.0f},	//KNEE_PITCH_L
-	{0.0f, 0.0f, -100.0f},	//FOOT_PITCH_L
-	{0.0f, 0.0f, 0.0f},		//FOOT_ROLL_L
-	{0.0f, 50.0f, 0.0f},	//HIP_YAW_R
-	{0.0f, 0.0f, -0.0f},	//HIP_ROLL_R
-	{0.0f, 0.0f, 0.0f},		//HIP_PITCH_R
-	{0.0f, 0.0f, -100.0f},	//KNEE_PITCH_R
-	{0.0f, 0.0f, -100.0f},	//FOOT_PITCH_R
-	{0.0f, 0.0f, 0.0f},		//FOOT_ROLL_R
+	//LARM
+	{6.0f, 87.5f, 1484.0f},
+	{0.0f, 72.8f, 0.0f},
+	{0.0f, 56.9f, 0.0f},
+	{0.0f, 0.0f, -196.5f},
+	{0.0f, 0.0f, -126.0f},
+	{0.0f, 0.0f, -127.5f},
+	{0.0f, 0.0f, -146.0f},
+	{0.0f, 0.0f, -40.0f},
 };
-*/
 
 #endif
