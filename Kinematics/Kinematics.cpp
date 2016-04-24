@@ -64,7 +64,7 @@ MatrixXd Kinematics::calcJacobian(vector<int> idx)
 {
 	size_t jsize = idx.size();
 	Matrix<double,3,1> target = ulink[idx.back()].p;
-	MatrixXd J = MatrixXd::Zero(6,6);
+	MatrixXd J = MatrixXd::Zero(6,jsize);
 
 	for(size_t i=0;i<jsize;i++)
 	{
@@ -87,9 +87,11 @@ bool Kinematics::calcInverseKinematics(int to, Link target)
 	Matrix<double,6,1> err;
 
 	calcForwardKinematics(WAIST);
+
 	idx = FindRoute(to);
-	MatrixXd J = Matrix<double,6,6>::Zero();
-	MatrixXd dq = Matrix<double,6,1>::Zero();
+	jsize = idx.size();
+	MatrixXd J = MatrixXd::Zero(6,jsize);
+	MatrixXd dq = MatrixXd::Zero(jsize,1);
 	for(int n=0;n<iteration;n++)
 	{
 		J = calcJacobian(idx);
