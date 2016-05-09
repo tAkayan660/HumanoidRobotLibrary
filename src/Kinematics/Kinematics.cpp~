@@ -81,7 +81,7 @@ MatrixXd Kinematics::calcJacobian(vector<int> idx)
 bool Kinematics::calcInverseKinematics(int to, Link target)
 {
 	const double lambda = 0.5;
-	const int iteration = 50;
+	const int iteration = 100;
 	size_t jsize;
 	vector<int> idx;
 	Matrix<double,6,1> err;
@@ -97,7 +97,10 @@ bool Kinematics::calcInverseKinematics(int to, Link target)
 		J = calcJacobian(idx);
 		err = calcVWerr(target, ulink[to]);
 		if(err.norm() < eps) return true;
-		dq = lambda * (J.inverse() * err);
+		if(jsize == 6)
+			dq = lambda * (J.inverse() * err);
+		else
+			dq = lambda * J.pseudo_inverse() * err;
 		for(size_t nn=0;nn<idx.size();nn++)
 		{
 			int j = idx[nn];
@@ -105,5 +108,7 @@ bool Kinematics::calcInverseKinematics(int to, Link target)
 		}
 		calcForwardKinematics(WAIST);
 	}
+	cout<<J.transpose()*(J*J.transpose()).inverse()<<endl;
+	cerr<<"false"<<endl;
 	return false;
 }
