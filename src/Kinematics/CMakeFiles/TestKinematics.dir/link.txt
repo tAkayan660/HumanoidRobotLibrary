@@ -1,0 +1,1 @@
+/usr/bin/c++       CMakeFiles/TestKinematics.dir/Kinematics.cpp.o CMakeFiles/TestKinematics.dir/Link.cpp.o CMakeFiles/TestKinematics.dir/testKinematics.cpp.o  -o TestKinematics -rdynamic -lboost_system -lboost_thread -lboost_filesystem -lpthread 

@@ -5,7 +5,7 @@ LIBS	=
 SRCS	= $(wildcard *.cpp)
 TEXT	= $(wildcard *.txt)
 TARGET	= $(SRCS:.cpp=.so)
-DESTDIR = /usr
+DESTDIR = /usr/local
 INSTALL = cp -p
 
 .PHONY: clean
