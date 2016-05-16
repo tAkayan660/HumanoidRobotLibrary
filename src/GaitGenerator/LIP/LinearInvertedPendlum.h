@@ -47,7 +47,6 @@ namespace cit
 				Tc = sqrt(Zc/ACCELALETION_GRAVITY);
 				D = a*pow((cosh(t_sup/Tc)-1),2) + b*pow((sinh(t_sup/Tc)/Tc),2);
 				
-				count = 0;
 				T = 0;
 
 				//STEP 1
