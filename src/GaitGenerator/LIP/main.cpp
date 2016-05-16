@@ -18,8 +18,6 @@ int main(int argc, char* argv[])
 		LIP.CalcGoalState();		//STEP 7
 		LIP.ModifyLandPos();		//STEP 8
 		cout<<"px:"<<LIP.p_list[n][0]<<" py:"<<LIP.p_list[n][1]<<" pxa:"<<LIP.p_modi_list[n][0]<<" pya:"<<LIP.p_modi_list[n][1]<<endl;
-		//cout<<LIP.foot_step_list[n][0]<<" "<<LIP.foot_step_list[n][1]<<endl;
-		//printf("px:%f py:%f\n",LIP.p_list[count][0], LIP.p_list[count][1]);
 	}
 
 	/* Write Center of Mass to Csv File */
