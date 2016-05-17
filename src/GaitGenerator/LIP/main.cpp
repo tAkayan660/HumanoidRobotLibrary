@@ -20,20 +20,18 @@ int main(int argc, char* argv[])
 		LIP.CalcWalkFragment();		//STEP 6
 		LIP.CalcGoalState();		//STEP 7
 		LIP.ModifyLandPos();		//STEP 8
-		//cout<<"px:"<<LIP.p_list_x[n]<<" py:"<<LIP.p_list_y[n]<<" pxa:"<<LIP.p_modi_list_x[n]<<" pya:"<<LIP.p_modi_list_y[n]<<endl;
 	}
 
-	plt::plot(LIP.cog_list_x, LIP.cog_list_y, "b");
-	plt::plot(LIP.p_list_x, LIP.p_list_y, ".g");
-	plt::plot(LIP.p_modi_list_x, LIP.p_modi_list_y, "+r");
+	plt::title("Gait Pattern by Linear Inverted Pendlum");
+	plt::xlabel("x[m]");
+	plt::ylabel("y[m]");
+	
+	plt::named_plot("Center of Mass", LIP.cog_list_x, LIP.cog_list_y, "b");
+	plt::named_plot("Foot Landing Pos", LIP.p_list_x, LIP.p_list_y, ".g");
+	plt::named_plot("Foot Landing Fixed Pos", LIP.p_modi_list_x, LIP.p_modi_list_y, "+r");
+	plt::legend();
 
 	plt::show();
-
-	/* Write Center of Mass to Csv File */
-	/*fp = fopen("InvetedPendlumCOG.csv", "w");
-	for(size_t i=0;i<LIP.cog_list.size();i++)
-		fprintf(fp,"%lf %lf\n",LIP.cog_list[i][0],LIP.cog_list[i][1]);
-	fclose(fp);*/
 
 	return 0;
 }
