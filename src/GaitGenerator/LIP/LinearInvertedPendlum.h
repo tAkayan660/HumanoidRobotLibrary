@@ -18,7 +18,7 @@ namespace cit
 			float t_sup;
 			float dt;
 			float Tc;
-			float D;
+			float C,S,D;
 			int count;
 			const int a,b;
 			float x,y;
@@ -34,9 +34,12 @@ namespace cit
 		public:
 			float T;
 			vector<Vector3f> foot_step_list;
-			vector<Vector2f> cog_list;
-			vector<Vector2f> p_list;
-			vector<Vector2f> p_modi_list;
+			vector<float> cog_list_x;
+			vector<float> cog_list_y;
+			vector<float> p_list_x;
+			vector<float> p_list_y;
+			vector<float> p_modi_list_x;
+			vector<float> p_modi_list_y;
 		public:
 			LinearInvertedPendlum(float _t_sup, float _dt, int _a, int _b)
 				: t_sup(_t_sup),
@@ -46,6 +49,8 @@ namespace cit
 			{
 				Tc = sqrt(Zc/ACCELALETION_GRAVITY);
 				D = a*pow((cosh(t_sup/Tc)-1),2) + b*pow((sinh(t_sup/Tc)/Tc),2);
+				S = sinh(0.8/Tc);
+				C = cosh(0.8/Tc);
 				
 				T = 0;
 
