@@ -46,28 +46,28 @@ void LinearInvertedPendlum::Integrate(int count)
 //STEP 5
 void LinearInvertedPendlum::CalcLegLandingPos()
 {
-#if 0
 	px = px + foot_step_list[count][0];
 	py = py - (pow(-1,count+1)*foot_step_list[count][1]);
-#endif
+#if 0
 	px = p_list_x[count] + cos(deg2rad(foot_step_list[count][2]))*foot_step_list[count][0] - sin(deg2rad(foot_step_list[count][2]))*(-1*pow(-1,count+1)*foot_step_list[count][1]);
 	py = p_list_y[count] + sin(deg2rad(foot_step_list[count][2]))*foot_step_list[count][0] + cos(deg2rad(foot_step_list[count][2]))*(-1*pow(-1,count+1)*foot_step_list[count][1]);
+#endif
 	p_list_x.push_back(px); p_list_y.push_back(py);
 }
 
 //STEP 6
 void LinearInvertedPendlum::CalcWalkFragment()
 {
+	xb = foot_step_list[count+1][0]/2;
+	yb = pow(-1,count+1)*foot_step_list[count+1][1]/2;
+	vxb = ((cosh(t_sup/Tc)+1)/(Tc*sinh(t_sup/Tc)))*xb;
+	vyb = ((cosh(t_sup/Tc)-1)/(Tc*sinh(t_sup/Tc)))*yb;
 #if 0
-	//xb = foot_step_list[count+1][0]/2;
-	//yb = pow(-1,count+1)*foot_step_list[count+1][1]/2;
-	//vxb = ((cosh(t_sup/Tc)+1)/(Tc*sinh(t_sup/Tc)))*xb;
-	//vyb = ((cosh(t_sup/Tc)-1)/(Tc*sinh(t_sup/Tc)))*yb;
-#endif
 	xb = cos(deg2rad(foot_step_list[count+1][2]))*foot_step_list[count+1][0]/2 - sin(deg2rad(foot_step_list[count+1][2]))*pow(-1,count+1)*foot_step_list[count+1][1]/2;
 	yb = sin(deg2rad(foot_step_list[count+1][2]))*foot_step_list[count+1][0]/2 + cos(deg2rad(foot_step_list[count+1][2]))*pow(-1,count+1)*foot_step_list[count+1][1]/2;
 	vxb = cos(deg2rad(foot_step_list[count+1][2]))*(1+C)/(Tc*S)*xb - sin(deg2rad(foot_step_list[count+1][2]))*(C-1)/(Tc*S)*yb;
 	vyb = sin(deg2rad(foot_step_list[count+1][2]))*(1+C)/(Tc*S)*xb + cos(deg2rad(foot_step_list[count+1][2]))*(C-1)/(Tc*S)*yb;
+#endif
 }
 
 //STEP 7
