@@ -8,7 +8,8 @@ find_package(Eigen3 REQUIRED)
 include_directories(
 	${BOOST_INCLUDE_DIRS}
 	${Boost_INCLUDE_DIR}
-	${EIGEN_INCLUDE_DIRS}
+	#${EIGEN_INCLUDE_DIRS}
+	/usr/include/eigen3
 )
 
 link_directories(

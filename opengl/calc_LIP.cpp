@@ -3,19 +3,17 @@
 #include<math.h>
 #include<stdio.h>
 
-#define PI 3.1415
-
-static GLfloat z = 0.8;//m
-static GLfloat x =  0.2;//m
-static GLfloat f = 0.0;
-static GLfloat m = 10.00;//kg
-static GLfloat dt = 0.01;
-static GLfloat g = 9.8; //m/s^2
-static GLfloat v_x = -0.791 ;
+static GLfloat z = 0.8;		// 初期化位置高さ
+static GLfloat x =  0.15;	// 初期化位置横
+static GLfloat f = 0.0;		//蹴り力
+static GLfloat m = 10.00;	//重量kg
+static GLfloat dt = 0.01;	//インターバル
+static GLfloat g = 9.8; 	//重力加速m/s^2
+static GLfloat v_x = -0.46;	//初速度及びx方向の速度
 
 
 
-void display(void)
+void display(void)		//ディスプレイの表示
 {
 	double roll_x;
 	double roll_y;
@@ -40,7 +38,8 @@ void display(void)
 
 	while(1){
 		deg = deg + 1;
-		rad = deg * PI/180;
+		rad = deg * M_PI/180;
+
 		roll_x = sin(rad);
 		roll_y = cos(rad);
 
@@ -52,39 +51,46 @@ void display(void)
 	glutSwapBuffers();
 }
 
-void simu(void)
+void simu(void)			//教科書p104~112までの内容
 {
-	double E = 0.0;
-	double v = 0.0;
-	double x_a = 0.0;
+	double E = 0.0;		//軌道エネルギー
+	double v = 0.0;		//瞬間の速度
+	double x_a = 0.0;	//瞬間の位置
 
-	double a_z = 0.0;
-	double v_z = 0.0;
-	double F = -m * g;
+	double a_z = 0.0;	//ｚ方向の加速度
+	double v_z = 0.0;	//ｚ方向の速度
+	double F = -m * g;	//重力
 
-	double a_x = 0.0;
+	double a_x = 0.0;	//ｘ方向の加速度
 
-	double s;
-	s = atan(x / z) * 180/PI;
+	double s;			//倒立振子の回転角
+	s = atan(x / z) * 180/M_PI;
 	printf("s:%lf \n",s);
 
-	s = s * PI/180;
+	if( -60 < s && s < 60 ){
+		s = s * M_PI/180;
 
-	f = m * g /cos(s);
+		f = m * g /cos(s);		//蹴り力の設定
 
-	a_z = (f*cos(s)+F) / m;
-	v_z += a_z * dt;
-	z += v_z *dt;
+		a_z = (f*cos(s)+F) / m;		//ｚ方向の運動
+		v_z += a_z * dt;
+		z += v_z *dt;
 
-	a_x = f*sin(s) / m;
-	v_x += a_x * dt;
-	x += v_x *dt;
+		a_x = f*sin(s) / m;		//ｘ方向の運動
+		v_x += a_x * dt;
+		x += v_x *dt;
+	}
 
 	glutPostRedisplay();
 
-	E = (v_x*v_x)/2-(g*x*x)/(2*z);
+	E = (v_x*v_x)/2-(g*x*x)/(2*z);		//軌道エネルギーの計算
 
 	printf("---Orbital energy---/%lf/------\n", E);
+
+	/*軌道エネルギーを比較してポテンシャルの山を越えるか
+	over-越えた場合　　under-越えない
+	p112の内容を計算する。*/
+
 	if(E > 0){
 		printf("---potential <<< over >>>\n");
 		v = 2*E;
@@ -92,7 +98,7 @@ void simu(void)
 		printf("---v----/%lf/----------\n", v);
 	}
 	else if(E <= 0){
-		printf("---potential <<< unber >>>\n");
+		printf("---potential <<< under >>>\n");
 		x_a = -(2*z*E)/g;
 		x_a = sqrt(x_a);
 		printf("---x_a-----/%lf/------------\n", x_a);
@@ -132,10 +138,10 @@ void mouse(int button, int state, int x, int y){
 			break;
 
 		case GLUT_RIGHT_BUTTON:
-			if ( state == GLUT_DOWN)
+			if ( state == GLUT_DOWN){
 				glutIdleFunc(NULL);
 				exit(0);
-			break;
+			}break;
 		default:
 			break;
 	}
@@ -145,7 +151,7 @@ int main(int argc, char *argv[])
 {
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
-	glutInitWindowSize (500, 500);
+	glutInitWindowSize (300, 300);
 	glutInitWindowPosition (1000, 100);
 	glutCreateWindow(argv[0]);
 	init();
