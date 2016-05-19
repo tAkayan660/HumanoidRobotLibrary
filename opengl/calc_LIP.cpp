@@ -3,13 +3,14 @@
 #include<math.h>
 #include<stdio.h>
 
-static GLfloat z = 0.8;		// 初期化位置高さ
-static GLfloat x =  0.15;	// 初期化位置横
-static GLfloat f = 0.0;		//蹴り力
-static GLfloat m = 10.00;	//重量kg
-static GLfloat dt = 0.01;	//インターバル
-static GLfloat g = 9.8; 	//重力加速m/s^2
-static GLfloat v_x = -0.46;	//初速度及びx方向の速度
+double z = 0.8;		// 初期位置高さ
+double x =  0.15;	// 初期位置横
+double f = 0.0;		//蹴り力
+const double m = 10.00;	//重量kg
+const double dt = 0.01;	//インターバル
+const double g = 9.8; 	//重力加速m/s^2
+
+double v_x = -0.46;	//初速度及びx方向の速度
 
 
 
@@ -59,7 +60,8 @@ void simu(void)			//教科書p104~112までの内容
 
 	double a_z = 0.0;	//ｚ方向の加速度
 	double v_z = 0.0;	//ｚ方向の速度
-	double F = -m * g;	//重力
+
+	const double F = -m * g;	//重力
 
 	double a_x = 0.0;	//ｘ方向の加速度
 
@@ -70,9 +72,9 @@ void simu(void)			//教科書p104~112までの内容
 	if( -60 < s && s < 60 ){
 		s = s * M_PI/180;
 
-		f = m * g /cos(s);		//蹴り力の設定
+		f = m * g /cos(s);		//蹴り力の設定 (4.2)
 
-		a_z = (f*cos(s)+F) / m;		//ｚ方向の運動
+		a_z = (f*cos(s)+F) / m;		//ｚ方向の運動 (4.3)
 		v_z += a_z * dt;
 		z += v_z *dt;
 
@@ -83,7 +85,7 @@ void simu(void)			//教科書p104~112までの内容
 
 	glutPostRedisplay();
 
-	E = (v_x*v_x)/2-(g*x*x)/(2*z);		//軌道エネルギーの計算
+	E = (v_x*v_x)/2-(g*x*x)/(2*z);		//軌道エネルギーの計算 (4.11)
 
 	printf("---Orbital energy---/%lf/------\n", E);
 
