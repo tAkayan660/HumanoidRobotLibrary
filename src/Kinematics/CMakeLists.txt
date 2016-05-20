@@ -8,7 +8,15 @@ find_package(Eigen3 REQUIRED)
 include_directories(
 	${BOOST_INCLUDE_DIRS}
 	${Boost_INCLUDE_DIR}
-	${EIGEN_INCLUDE_DIR}
+	${EIGEN3_INCLUDE_DIR}
+)
+
+add_library(Kinematics
+	Kinematics.cpp
+	Kinematics.h
+	Link.cpp
+	Link.h
+	LinkParameter.h
 )
 
 link_directories(
@@ -16,6 +24,6 @@ link_directories(
 	${Boost_LIBRARY_DIR}
 )
 
-add_executable(TestKinematics Kinematics.cpp Link.cpp testKinematics.cpp Kinematics.h Link.h PA10LinkParameter.h)
-
-target_link_libraries(TestKinematics ${Boost_LIBRARIES})
+add_executable(TestKinematics Kinematics.cpp Link.cpp testKinematics.cpp Kinematics.h Link.h LinkParameter.h)
+add_dependencies(TestKinematics Kinematics)
+target_link_libraries(TestKinematics ${Boost_LIBRARIES} Kinematics)
