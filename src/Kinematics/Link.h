@@ -12,7 +12,7 @@
 #include <string>
 #include <vector>
 #include <Eigen/Dense>
-#include "PA10LinkParameter.h"
+#include "LinkParameter.h"
 
 using namespace std;
 using namespace Eigen;
