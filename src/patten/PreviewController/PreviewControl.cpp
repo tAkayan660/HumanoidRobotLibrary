@@ -17,19 +17,22 @@ void ZMPPreviewControl::RefZmpTrajectory(vector<Vector4f> foot_step_list)
 	}
 }
 
+/* 予見制御ゲインの計算 */
+void ZMPPreviewControl::calc_f()
+{
+	Matrix<float,4,4> xi(xi0.transpose());
+	for(int preview_step=1;preview_step<=(preview_delay/dt);preview_step++){
+		fi.push_back(-(1.0/(R+G.transpose()*P*G))*G.transpose()*xi.pow(preview_step-1)*P*GR);
+	}
+}
+
 /* 制御入力の計算 */
 void ZMPPreviewControl::calc_u()
 {
-	Matrix<float,1,2> du;
-	Matrix<float,4,4> xi(xi0.transpose());
-
-	du = K*xk_ex;
-	for(int preview_step=1;preview_step<=(preview_delay/dt);preview_step++)
-	{
-		fi = -(1.0/(R+G.transpose()*P*G))*G.transpose()*xi.pow(preview_step-1)*P*GR;
-		du += fi * (refzmp[preview_step+loop_step] - refzmp[preview_step+loop_step-1]);
+	u = K*xk_ex;
+	for(int preview_step=1;preview_step<=(preview_delay/dt);preview_step++){
+		u += fi[preview_step-1] * (refzmp[preview_step+loop_step] - refzmp[preview_step+loop_step-1]);
 	}
-	u+=du;
 }
 
 /* 重心軌道の計算 */
