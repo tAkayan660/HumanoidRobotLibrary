@@ -28,7 +28,7 @@ namespace MotionControl
 			Matrix<float,1,2> u;	//制御入力
 			Matrix<float,1,2> p;	//出力ZMP
 			Matrix<float,1,2> e;	//ZMP誤差
-			vector<float> fi;		//フィードバックゲイン
+			float fi;				//フィードバックゲイン
 
 			int gait_count;
 			int stop_time;
@@ -43,12 +43,13 @@ namespace MotionControl
 			Matrix<float,4,4> phi;
 			Matrix<float,4,1> G;
 			Matrix<float,4,1> GR;
-			Matrix<float,4,2> xk_ex;
 			Matrix<float,4,4> xi0;
+			Matrix<float,4,2> xk_ex;
 			Matrix<float,4,4> P;
 			Matrix<float,1,4> K;
 
 			Matrix<float,2,1> temp_refzmp;
+
 		public:
 			vector<Vector2f> refzmp;
 		public:
@@ -56,10 +57,10 @@ namespace MotionControl
 			ZMPPreviewControl(const float _dt, const float _preview_delay, const double _Q=1e+08, const double _R=1.0)
 				: dt(_dt),
 				  preview_delay(_preview_delay),
-				  stop_time(1.0),
+					stop_time(1.0),
 				  xk(Matrix<float,3,2>::Zero()),
 				  xkp(Matrix<float,3,2>::Zero()),
-				  xk_ex(Matrix<float,4,2>::Zero()),
+					xk_ex(Matrix<float,4,2>::Zero()),
 				  u(Matrix<float,1,2>::Zero()),
 				  p(Matrix<float,1,2>::Zero()),
 				  Q(_Q),
@@ -72,7 +73,7 @@ namespace MotionControl
 				c << 1, 0, HEIGHT_ZC / ACCELERATION_OF_GRAVITY;
 			}
 
-			/* 拡大系 */
+			/**/
 			void ExtendPreviewControlParam()
 			{
 				Matrix<float,1,3> cA(c*A);
@@ -91,21 +92,27 @@ namespace MotionControl
 						-4.8302e+07, 8.3865e+08, 1.4345e+08, 7.2054e+05;
 				K << 2.6772e+03, -9.1990e+04, -1.6264e+04, -172.6188;
 
-				xi0 = (I-G*(1.0/(R+G.transpose()*P*G))*G.transpose()*P)*phi; 
-
-				/* 予見制御ゲイン計算 */
-				calc_f();
+				xi0 = (I-G*(1.0/(R+G.transpose()*P*G))*G.transpose()*P)*phi;
 			}
+
 			/* 目標ZMPの補間 */
 			void RefZmpTrajectory(vector<Vector4f> foot_step_list);
+
 			/* 目標ZMPの取得 */
-			void get_ref_zmp(Matrix<float,2,1> &refzmp){ refzmp = this->temp_refzmp; }
+			void get_ref_zmp(Matrix<float,2,1> &refzmp)
+			{
+				refzmp = this->temp_refzmp;
+			}
+			
 			/* 出力ZMPの取得 */
-			void get_current_zmp(Matrix<float,1,2> &current_zmp){ current_zmp = this->p; }
-			/* 予見制御ゲインの計算 */
-			void calc_f();
+			void get_current_zmp(Matrix<float,1,2> &current_zmp)
+			{
+				current_zmp = p;
+			}
+
 			/* 制御入力の計算 */
 			void calc_u();
+
 			/* 重心軌道の計算 */
 			bool calc_xk(Vector2f &cog);
 	};
