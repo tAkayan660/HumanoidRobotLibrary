@@ -29,10 +29,13 @@ void ZMPPreviewControl::calc_f()
 /* 制御入力の計算 */
 void ZMPPreviewControl::calc_u()
 {
-	u = K*xk_ex;
+	Matrix<float,1,2> du;
+
+	du = K*xk_ex;
 	for(int preview_step=1;preview_step<=(preview_delay/dt);preview_step++){
-		u += fi[preview_step-1] * (refzmp[preview_step+loop_step] - refzmp[preview_step+loop_step-1]);
+		du += fi[preview_step-1] * (refzmp[preview_step+loop_step] - refzmp[preview_step+loop_step-1]);
 	}
+	u += du;
 }
 
 /* 重心軌道の計算 */
