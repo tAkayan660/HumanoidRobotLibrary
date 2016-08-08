@@ -107,7 +107,7 @@ namespace MotionControl
 			/* 制御入力の計算 */
 			void calc_u();
 			/* 重心軌道の計算 */
-			bool calc_xk(Vector2f &cog);
+			bool calc_xk(Vector2f &com_pos, Vector2f &com_vel, Vector2f &com_acc);
 	};
 }
 

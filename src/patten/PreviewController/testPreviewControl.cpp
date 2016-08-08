@@ -7,7 +7,7 @@ namespace plt = matplotlibcpp;
 int main(int argc, char *argv[])
 {
 	bool result=true;
-	Vector2f cog;
+	Vector2f com_pos, com_vel, com_acc;
 	vector<Vector4f> foot_step_list;
 	vector<float> cog_list_x, cog_list_y;
 	vector<float> refzmp_x, refzmp_y;
@@ -31,9 +31,9 @@ int main(int argc, char *argv[])
 	
 	/* 予見制御計算ループ */	
 	while(result){
-		result = preview_control.calc_xk(cog);
-		cog_list_x.push_back(cog(0));
-		cog_list_y.push_back(cog(1));
+		result = preview_control.calc_xk(com_pos, com_vel, com_acc);
+		cog_list_x.push_back(com_pos(0));
+		cog_list_y.push_back(com_pos(1));
 	}
 	
 	/* グラフ描画用 */	
@@ -44,11 +44,11 @@ int main(int argc, char *argv[])
 	}	
 
 	/* 歩行パターン軌道描画 */
-	plt::title("Reference ZMP Trajectory");
+	plt::title("Preview Control");
 	plt::xlabel("x[m]");
 	plt::ylabel("y[m]");
 	plt::xlim(-0.01, 0.03);
-	plt::ylim(0.06, -0.06);
+	plt::ylim(0.16, -0.16);
 	plt::named_plot("Reference ZMP", refzmp_x, refzmp_y, "-r");
 	plt::named_plot("Center of Mass", cog_list_x, cog_list_y, "-g");
 	plt::legend();
