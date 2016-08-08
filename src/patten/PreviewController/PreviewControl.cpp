@@ -39,7 +39,7 @@ void ZMPPreviewControl::calc_u()
 }
 
 /* 重心軌道の計算 */
-bool ZMPPreviewControl::calc_xk(Vector2f &cog)
+bool ZMPPreviewControl::calc_xk(Vector2f &com_pos, Vector2f &com_vel, Vector2f &com_acc)
 {
 	if(gait_count <= loop_step)
 	{
@@ -63,7 +63,10 @@ bool ZMPPreviewControl::calc_xk(Vector2f &cog)
 
 	//Calculation xk
 	xk = A*xk + b*u;
-	cog << xk(0,0), xk(0,1);
+	com_pos << xk(0,0), xk(0,1);
+	com_vel << xk(1,0), xk(1,1);
+	com_acc << xk(2,0), xk(2,1);
+	
 
 	//Increment
 	loop_step++;
