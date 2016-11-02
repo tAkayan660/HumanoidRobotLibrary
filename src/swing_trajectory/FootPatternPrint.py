@@ -8,8 +8,6 @@ foot_pos_z = []
 
 data = np.loadtxt('swing_foot_trajectory.csv')
 
-print len(data)
-
 for i in range(len(data)):
     time.append(data[i][0])
     foot_pos_x.append(data[i][1])
