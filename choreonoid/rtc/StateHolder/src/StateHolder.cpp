@@ -26,11 +26,13 @@ StateHolder::StateHolder(RTC::Manager* manager)
 	m_gyrometerIn("gyrometer", m_gyrometer),
 	m_lfsensorIn("lfsensor", m_lfsensor),
 	m_rfsensorIn("rfsensor", m_rfsensor),
-	/*m_chestcameraIn("chestcamera", m_chestcamera),
+#if 0
+	m_chestcameraIn("chestcamera", m_chestcamera),
 	m_headlcameraIn("headlcamera", m_headlcamera),
 	m_headrcameraIn("headrcamera", m_headrcamera),
 	m_larmcameraIn("larmcamera", m_larmcamera),
-	m_rarmcameraIn("rarmcamera", m_rarmcamera),*/
+	m_rarmcameraIn("rarmcamera", m_rarmcamera),
+#endif
 	m_qOutOut("qOut", m_qOut)
 {
 }
@@ -44,20 +46,20 @@ StateHolder::~StateHolder()
 RTC::ReturnCode_t StateHolder::onInitialize()
 {
 	addInPort("qIn", m_qInIn);
-#if 1
+
 	addInPort("gsensor", m_gsensorIn);
 	addInPort("gyrometer", m_gyrometerIn);
 	addInPort("lfsensor", m_lfsensorIn);
 	addInPort("rfsensor", m_rfsensorIn);
 	addInPort("lfsensor", m_lfsensorIn);
-	//addInPort("chestcamera", m_chestcameraIn);
-	//addInPort("headlcamera", m_headlcameraIn);
-	//addInPort("headrcamera", m_headrcameraIn);
-	//addInPort("larmcamera", m_larmcameraIn);
-	//addInPort("rarmcamera", m_rarmcameraIn);
+#if 0
+	addInPort("chestcamera", m_chestcameraIn);
+	addInPort("headlcamera", m_headlcameraIn);
+	addInPort("headrcamera", m_headrcameraIn);
+	addInPort("larmcamera", m_larmcameraIn);
+	addInPort("rarmcamera", m_rarmcameraIn);
 #endif
-	//addOutPort("qOut", m_qOutOut);
-	//addOutPort("zmp", m_zmpOut);
+	addOutPort("qOut", m_qOutOut);
 
 	return RTC::RTC_OK;
 }
@@ -79,12 +81,11 @@ RTC::ReturnCode_t StateHolder::onExecute(RTC::UniqueId ec_id)
 	if(m_qInIn.isNew())
 		m_qInIn.read();
 	
-	//for(size_t i=0;i<m_qIn.data.length();i++)
-	//	m_qOut.data[i] = m_qIn.data[i];
+	for(size_t i=0;i<m_qIn.data.length();i++)
+		m_qOut.data[i] = m_qIn.data[i];
 	
-//	m_qOutOut.write();
+	m_qOutOut.write();
 
-#if 1
 	if(m_gsensorIn.isNew())
 		m_gsensorIn.read();
 	
@@ -104,7 +105,7 @@ RTC::ReturnCode_t StateHolder::onExecute(RTC::UniqueId ec_id)
 	for(size_t i=0;i<m_rfsensor.data.length();i++)
 		cout<<m_rfsensor.data[i]<< " ";
 	cout<<"\n"; 
-#endif
+
   return RTC::RTC_OK;
 }
 
