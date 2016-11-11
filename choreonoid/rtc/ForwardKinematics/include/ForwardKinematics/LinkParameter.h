@@ -56,6 +56,7 @@ static const string joint_name[] = {
 	"LARM_JOINT5",
 	"LARM_JOINT6",
 	"LARM_JOINT7",
+	"RANGE_JOINT",
 };
 
 enum
@@ -94,6 +95,7 @@ enum
 	LARM_JOINT5,
 	LARM_JOINT6,
 	LARM_JOINT7,
+	RANGE_JOINT,
 	JOINT_NUM
 };
 

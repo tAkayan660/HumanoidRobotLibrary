@@ -36,7 +36,6 @@ RTC::ReturnCode_t ForwardKinematics::onInitialize()
 	//addOutPort("qOut", m_qOutOut);
 	
 	kine = new Kinematics(ulink);
-
 	SetJointInfo(ulink);
 
 	return RTC::RTC_OK;
@@ -48,7 +47,7 @@ RTC::ReturnCode_t ForwardKinematics::onActivated(RTC::UniqueId ec_id)
 		m_qInIn.read();
 	
 	for(size_t i=0;i<m_qIn.data.length();i++)
-		kine->ulink[i].q = m_qIn.data[i];
+		ulink[i].q = m_qIn.data[i];
 	
 	kine->calcForwardKinematics(WAIST);
 
@@ -68,11 +67,12 @@ RTC::ReturnCode_t ForwardKinematics::onExecute(RTC::UniqueId ec_id)
 		m_qInIn.read();
 	
 	for(size_t i=0;i<m_qIn.data.length();i++)
-		kine->ulink[i].q = m_qIn.data[i];
+		ulink[i].q = m_qIn.data[i];
 
 	kine->calcForwardKinematics(WAIST);
 
-	cout << ulink[RLEG_JOINT5].p << endl;
+	cout << ulink[RLEG_JOINT5].p(0) << " " << ulink[RLEG_JOINT5].p(1) << " " << ulink[RLEG_JOINT5].p(2) << endl;
+	cout << ulink[LLEG_JOINT5].p(0) << " " << ulink[LLEG_JOINT5].p(1) << " " << ulink[LLEG_JOINT5].p(2) << "\n" << endl;
 
 	return RTC::RTC_OK;
 }
