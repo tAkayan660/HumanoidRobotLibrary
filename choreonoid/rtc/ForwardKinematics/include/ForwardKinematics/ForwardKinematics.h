@@ -33,8 +33,8 @@ class ForwardKinematics
 		RTC::TimedDoubleSeq m_qIn;
 		InPort<RTC::TimedDoubleSeq> m_qInIn;
 
-		RTC::TimedDoubleSeq m_qOut;
-		OutPort<RTC::TimedDoubleSeq> m_qOutOut;
+//		RTC::TimedDoubleSeq m_qOut;
+//		OutPort<RTC::TimedDoubleSeq> m_qOutOut;
 	private:
 		Kinematics *kine;
 		Link ulink[JOINT_NUM];

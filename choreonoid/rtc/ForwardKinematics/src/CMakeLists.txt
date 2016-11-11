@@ -1,4 +1,4 @@
-set(comp_srcs ForwardKinematics.cpp )
+set(comp_srcs ForwardKinematics.cpp Kinematics.cpp Link.cpp)
 set(standalone_srcs ForwardKinematicsComp.cpp)
 
 if (DEFINED OPENRTM_INCLUDE_DIRS)

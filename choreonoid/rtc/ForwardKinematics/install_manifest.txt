@@ -1,0 +1,7 @@
+/usr/local/components/lib/pkgconfig/forwardkinematics.pc
+/usr/local/components/share/forwardkinematics-1/forwardkinematics-config.cmake
+/usr/local/components/share/forwardkinematics-1/forwardkinematics-config-version.cmake
+/usr/local/components/lib/ForwardKinematics.so
+/usr/local/components/bin/ForwardKinematicsComp
+/usr/local/components/lib/ForwardKinematics/ForwardKinematicsDepends.cmake
+/usr/local/components/lib/ForwardKinematics/ForwardKinematicsDepends-noconfig.cmake

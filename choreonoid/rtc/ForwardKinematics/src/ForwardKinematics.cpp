@@ -47,8 +47,8 @@ RTC::ReturnCode_t ForwardKinematics::onActivated(RTC::UniqueId ec_id)
 	if(m_qInIn.isNew())
 		m_qInIn.read();
 	
-	for(size_t i=0;i<m_qIn.data.lenght();i++)
-		ulink[i]->q = m_qIn.data[i];
+	for(size_t i=0;i<m_qIn.data.length();i++)
+		kine->ulink[i].q = m_qIn.data[i];
 	
 	kine->calcForwardKinematics(WAIST);
 
@@ -67,8 +67,8 @@ RTC::ReturnCode_t ForwardKinematics::onExecute(RTC::UniqueId ec_id)
 	if(m_qInIn.isNew())
 		m_qInIn.read();
 	
-	for(size_t i=0;i<m_qIn.data.lenght();i++)
-		ulink[i]->q = m_qIn.data[i];
+	for(size_t i=0;i<m_qIn.data.length();i++)
+		kine->ulink[i].q = m_qIn.data[i];
 
 	kine->calcForwardKinematics(WAIST);
 
