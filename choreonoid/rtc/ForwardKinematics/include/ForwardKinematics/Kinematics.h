@@ -17,6 +17,7 @@ namespace MotionControl
 	public:
 		struct Link *ulink;
 	public:
+		Kinematics();
 		Kinematics(Link *ulink)
 		{
 			this->ulink = ulink;
