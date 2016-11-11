@@ -18,8 +18,8 @@ static const char* forwardkinematics_spec[] =
 
 ForwardKinematics::ForwardKinematics(RTC::Manager* manager)
 	: RTC::DataFlowComponentBase(manager),
-	m_qInIn("qIn", m_qIn),
-	m_qOutOut("qOut", m_qOut)
+	m_qInIn("qIn", m_qIn)
+	//m_qOutOut("qOut", m_qOut)
 {
 }
 
@@ -33,13 +33,25 @@ RTC::ReturnCode_t ForwardKinematics::onInitialize()
 {
 	addInPort("qIn", m_qInIn);
 
-	addOutPort("qOut", m_qOutOut);
+	//addOutPort("qOut", m_qOutOut);
+	
+	kine = new Kinematics(ulink);
+
+	SetJointInfo(ulink);
 
 	return RTC::RTC_OK;
 }
 
 RTC::ReturnCode_t ForwardKinematics::onActivated(RTC::UniqueId ec_id)
 {
+	if(m_qInIn.isNew())
+		m_qInIn.read();
+	
+	for(size_t i=0;i<m_qIn.data.lenght();i++)
+		ulink[i]->q = m_qIn.data[i];
+	
+	kine->calcForwardKinematics(WAIST);
+
 	return RTC::RTC_OK;
 }
 
@@ -52,6 +64,16 @@ RTC::ReturnCode_t ForwardKinematics::onDeactivated(RTC::UniqueId ec_id)
 
 RTC::ReturnCode_t ForwardKinematics::onExecute(RTC::UniqueId ec_id)
 {
+	if(m_qInIn.isNew())
+		m_qInIn.read();
+	
+	for(size_t i=0;i<m_qIn.data.lenght();i++)
+		ulink[i]->q = m_qIn.data[i];
+
+	kine->calcForwardKinematics(WAIST);
+
+	cout << ulink[RLEG_JOINT5].p << endl;
+
 	return RTC::RTC_OK;
 }
 

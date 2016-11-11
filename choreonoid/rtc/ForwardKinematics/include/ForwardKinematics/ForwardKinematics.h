@@ -13,6 +13,10 @@ using namespace RTC;
 #include <rtm/DataInPort.h>
 #include <rtm/DataOutPort.h>
 
+#include "Kinematics.h"
+
+using namespace MotionControl;
+
 class ForwardKinematics
 : public RTC::DataFlowComponentBase
 {
@@ -26,13 +30,15 @@ class ForwardKinematics
 		virtual RTC::ReturnCode_t onExecute(RTC::UniqueId ec_id);
 
 	protected:
-
 		RTC::TimedDoubleSeq m_qIn;
 		InPort<RTC::TimedDoubleSeq> m_qInIn;
 
 		RTC::TimedDoubleSeq m_qOut;
 		OutPort<RTC::TimedDoubleSeq> m_qOutOut;
 	private:
+		Kinematics *kine;
+		Link ulink[JOINT_NUM];
+		Link FLink[2];
 };
 
 
