@@ -26,13 +26,6 @@ StateHolder::StateHolder(RTC::Manager* manager)
 	m_gyrometerIn("gyrometer", m_gyrometer),
 	m_lfsensorIn("lfsensor", m_lfsensor),
 	m_rfsensorIn("rfsensor", m_rfsensor),
-#if 0
-	m_chestcameraIn("chestcamera", m_chestcamera),
-	m_headlcameraIn("headlcamera", m_headlcamera),
-	m_headrcameraIn("headrcamera", m_headrcamera),
-	m_larmcameraIn("larmcamera", m_larmcamera),
-	m_rarmcameraIn("rarmcamera", m_rarmcamera),
-#endif
 	m_qOutOut("qOut", m_qOut)
 {
 }
@@ -52,13 +45,6 @@ RTC::ReturnCode_t StateHolder::onInitialize()
 	addInPort("lfsensor", m_lfsensorIn);
 	addInPort("rfsensor", m_rfsensorIn);
 	addInPort("lfsensor", m_lfsensorIn);
-#if 0
-	addInPort("chestcamera", m_chestcameraIn);
-	addInPort("headlcamera", m_headlcameraIn);
-	addInPort("headrcamera", m_headrcameraIn);
-	addInPort("larmcamera", m_larmcameraIn);
-	addInPort("rarmcamera", m_rarmcameraIn);
-#endif
 	addOutPort("qOut", m_qOutOut);
 
 	return RTC::RTC_OK;
@@ -81,9 +67,10 @@ RTC::ReturnCode_t StateHolder::onExecute(RTC::UniqueId ec_id)
 	if(m_qInIn.isNew())
 		m_qInIn.read();
 	
-	for(size_t i=0;i<m_qIn.data.length();i++)
+	for(size_t i=0;i<m_qIn.data.length();i++){
 		m_qOut.data[i] = m_qIn.data[i];
-	
+		cout<<m_qIn.data[i]<<endl;	
+	}
 	m_qOutOut.write();
 
 	if(m_gsensorIn.isNew())
