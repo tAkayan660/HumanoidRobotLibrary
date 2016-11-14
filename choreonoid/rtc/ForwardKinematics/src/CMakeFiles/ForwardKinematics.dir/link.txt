@@ -1,0 +1,1 @@
+/usr/bin/c++  -fPIC    -shared -Wl,-soname,ForwardKinematics.so -o ForwardKinematics.so CMakeFiles/ForwardKinematics.dir/ForwardKinematics.cpp.o CMakeFiles/ForwardKinematics.dir/Kinematics.cpp.o CMakeFiles/ForwardKinematics.dir/Link.cpp.o  -L/opt/ros/indigo/lib -lpthread -lomniORB4 -lomnithread -lomniDynamic4 -lRTC -lcoil -Wl,-rpath,/opt/ros/indigo/lib: 

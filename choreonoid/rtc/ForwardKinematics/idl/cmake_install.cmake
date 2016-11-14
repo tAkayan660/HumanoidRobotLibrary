@@ -1,4 +1,4 @@
-# Install script for directory: /home/haze/github/HumanoidRobotLibrary/choreonoid/rtc/ForwardKinematics/idl
+# Install script for directory: /home/haze/HumanoidRobotLibrary/choreonoid/rtc/ForwardKinematics/idl
 
 # Set the install prefix
 IF(NOT DEFINED CMAKE_INSTALL_PREFIX)

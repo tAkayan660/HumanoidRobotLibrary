@@ -1,8 +1,8 @@
-if(NOT EXISTS "/home/haze/github/HumanoidRobotLibrary/choreonoid/rtc/ForwardKinematics/install_manifest.txt")
-    message(FATAL_ERROR "Cannot find install manifest: \"/home/haze/github/HumanoidRobotLibrary/choreonoid/rtc/ForwardKinematics/install_manifest.txt\"")
-endif(NOT EXISTS "/home/haze/github/HumanoidRobotLibrary/choreonoid/rtc/ForwardKinematics/install_manifest.txt")
+if(NOT EXISTS "/home/haze/HumanoidRobotLibrary/choreonoid/rtc/ForwardKinematics/install_manifest.txt")
+    message(FATAL_ERROR "Cannot find install manifest: \"/home/haze/HumanoidRobotLibrary/choreonoid/rtc/ForwardKinematics/install_manifest.txt\"")
+endif(NOT EXISTS "/home/haze/HumanoidRobotLibrary/choreonoid/rtc/ForwardKinematics/install_manifest.txt")
 
-file(READ "/home/haze/github/HumanoidRobotLibrary/choreonoid/rtc/ForwardKinematics/install_manifest.txt" files)
+file(READ "/home/haze/HumanoidRobotLibrary/choreonoid/rtc/ForwardKinematics/install_manifest.txt" files)
 string(REGEX REPLACE "\n" ";" files "${files}")
 foreach(file ${files})
     message(STATUS "Uninstalling \"$ENV{DESTDIR}${file}\"")

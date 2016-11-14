@@ -1,4 +1,4 @@
-# Install script for directory: /home/haze/github/HumanoidRobotLibrary/choreonoid/rtc/ForwardKinematics/cmake
+# Install script for directory: /home/haze/HumanoidRobotLibrary/choreonoid/rtc/ForwardKinematics/cmake
 
 # Set the install prefix
 IF(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -33,13 +33,13 @@ IF(NOT DEFINED CMAKE_INSTALL_SO_NO_EXE)
 ENDIF(NOT DEFINED CMAKE_INSTALL_SO_NO_EXE)
 
 IF(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" STREQUAL "component")
-  FILE(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/components/lib/pkgconfig" TYPE FILE FILES "/home/haze/github/HumanoidRobotLibrary/choreonoid/rtc/ForwardKinematics/cmake/forwardkinematics.pc")
+  FILE(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/components/lib/pkgconfig" TYPE FILE FILES "/home/haze/HumanoidRobotLibrary/choreonoid/rtc/ForwardKinematics/cmake/forwardkinematics.pc")
 ENDIF(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" STREQUAL "component")
 
 IF(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" STREQUAL "library")
   FILE(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/components/share/forwardkinematics-1" TYPE FILE FILES
-    "/home/haze/github/HumanoidRobotLibrary/choreonoid/rtc/ForwardKinematics/cmake/forwardkinematics-config.cmake"
-    "/home/haze/github/HumanoidRobotLibrary/choreonoid/rtc/ForwardKinematics/cmake/forwardkinematics-config-version.cmake"
+    "/home/haze/HumanoidRobotLibrary/choreonoid/rtc/ForwardKinematics/cmake/forwardkinematics-config.cmake"
+    "/home/haze/HumanoidRobotLibrary/choreonoid/rtc/ForwardKinematics/cmake/forwardkinematics-config-version.cmake"
     )
 ENDIF(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" STREQUAL "library")
 
