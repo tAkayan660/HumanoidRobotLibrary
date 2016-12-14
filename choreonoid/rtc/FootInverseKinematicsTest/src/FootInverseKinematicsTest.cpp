@@ -1,16 +1,5 @@
-// -*- C++ -*-
-/*!
- * @file  FootInverseKinematicsTest.cpp
- * @brief  Test program check Inverse Kinematics 
- * @date $Date$
- *
- * $Id$
- */
-
 #include "FootInverseKinematicsTest.h"
 
-// Module specification
-// <rtc-template block="module_spec">
 static const char* footinversekinematicstest_spec[] =
 {
 	"implementation_id", "FootInverseKinematicsTest",
@@ -26,34 +15,25 @@ static const char* footinversekinematicstest_spec[] =
 	"lang_type",         "compile",
 	""
 };
-// </rtc-template>
 
-/*!
- * @brief constructor
- * @param manager Maneger Object
- */
 FootInverseKinematicsTest::FootInverseKinematicsTest(RTC::Manager* manager)
-	// <rtc-template block="initializer">
 	: RTC::DataFlowComponentBase(manager),
 	m_qCurIn("qCur", m_qCur),
+	m_axesIn("axes", m_axes),
+	m_buttonIn("button", m_button),
 	m_qRefOut("qRef", m_qRef)
-
-	  // </rtc-template>
 {
 }
 
-/*!
- * @brief destructor
- */
 FootInverseKinematicsTest::~FootInverseKinematicsTest()
 {
 }
 
-
-
 RTC::ReturnCode_t FootInverseKinematicsTest::onInitialize()
 {
 	addInPort("qCur", m_qCurIn);
+	addInPort("axes", m_axesIn);
+	addInPort("button", m_buttonIn);
 
 	addOutPort("qRef", m_qRefOut);
 
@@ -92,6 +72,11 @@ RTC::ReturnCode_t FootInverseKinematicsTest::onDeactivated(RTC::UniqueId ec_id)
 
 RTC::ReturnCode_t FootInverseKinematicsTest::onExecute(RTC::UniqueId ec_id)
 {
+	if(m_axesIn.isNew()){
+		m_axesIn.read();
+		cout << m_axes.data[0] << endl;
+	}
+	
 	if(m_qCurIn.isNew()){
 		m_qCurIn.read();
 		
@@ -100,8 +85,8 @@ RTC::ReturnCode_t FootInverseKinematicsTest::onExecute(RTC::UniqueId ec_id)
 
 		kine->calcForwardKinematics(WAIST);
 
-		if(RFLink.p(2) < -650.0){
-			RFLink.p(2) += 0.1; LFLink.p(2) += 0.1;
+		if(RFLink.p(2) < -500.0){
+			RFLink.p(2) += 0.1*m_axes.data[0]; LFLink.p(2) += 0.1*m_axes.data[0];
 
 			if(kine->calcInverseKinematics(RLEG_JOINT5, RFLink) && kine->calcInverseKinematics(LLEG_JOINT5, LFLink)){
 				for(size_t i=0;i<12;i++)
@@ -116,8 +101,6 @@ RTC::ReturnCode_t FootInverseKinematicsTest::onExecute(RTC::UniqueId ec_id)
 
 	return RTC::RTC_OK;
 }
-
-
 
 extern "C"
 {
