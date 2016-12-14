@@ -36,6 +36,12 @@ using namespace RTC;
 #include <rtm/DataInPort.h>
 #include <rtm/DataOutPort.h>
 
+#include "Kinematics.h"
+#include "Link.h"
+#include "LinkParameter.h"
+
+using namespace MotionControl;
+
 /*!
  * @class FootInverseKinematicsTest
  * @brief  Test program check Inverse Kinematics 
@@ -266,6 +272,9 @@ class FootInverseKinematicsTest
   // </rtc-template>
 
  private:
+	Kinematics *kine;
+	Link ulink[JOINT_NUM];
+	Link RFLink, LFLink;
   // <rtc-template block="private_attribute">
   
   // </rtc-template>
