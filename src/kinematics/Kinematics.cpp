@@ -80,7 +80,7 @@ MatrixXd Kinematics::calcJacobian(vector<int> idx)
 }
 
 template <typename t_matrix>
-t_matrix Kinematics::PseudoInverse(const t_matrix& m, const double &tolerance)
+t_matrix Kinematics::PseudoInverse(const t_matrix& m, const double &tolerance=1e-06)
 {
 	typedef JacobiSVD<t_matrix> TSVD;
 	unsigned int svd_opt(ComputeThinU | ComputeThinV);
