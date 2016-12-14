@@ -1,7 +1,6 @@
 #include "PDController.h"
 
 using namespace std;
-using namespace cnoid;
 
 namespace{
 	const char* PDController_spec[] =
@@ -23,6 +22,7 @@ namespace{
 PDController::PDController(RTC::Manager* manager)
 	: RTC::DataFlowComponentBase(manager),
 	m_angleIn("q", m_angle),
+	m_angleRefIn("qRef", m_angleRef),
 	m_torqueOut("u", m_torque),
 	dt(0.001),
 	dq_old(0.0)
@@ -47,6 +47,7 @@ void PDController::ReadGain(size_t numJoints,std::vector<double> &pgain,std::vec
 	angleRef.resize(numJoints);
 	q_old.resize(numJoints);
 	q_old_ref.resize(numJoints);
+	m_angleRef.data.length(numJoints);
 	m_torque.data.length(numJoints);
 
 	int i=0;
@@ -62,7 +63,7 @@ RTC::ReturnCode_t PDController::onInitialize()
 {
 	// Set InPort buffers
 	addInPort("q", m_angleIn);
-	//addInPort("refq",m_anglelRefIn);
+	addInPort("qRef",m_angleRefIn);
 
 	// Set OutPort buffenr
 	addOutPort("u", m_torqueOut);
@@ -77,9 +78,8 @@ RTC::ReturnCode_t PDController::onActivated(RTC::UniqueId ec_id)
 		ReadGain(m_angle.data.length(),pgain,dgain);
 	}
 
-	for(size_t i=0;i<m_angle.data.length();i++){
-		angleRef[i] = q_old[i] = q_old_ref[i] = m_angle.data[i];
-	}
+	for(size_t i=0;i<m_angle.data.length();i++)
+		m_angleRef.data[i] = q_old[i] = q_old_ref[i] = m_angle.data[i];
 
 	return RTC::RTC_OK;
 }
@@ -92,12 +92,13 @@ RTC::ReturnCode_t PDController::onDeactivated(RTC::UniqueId ec_id)
 
 RTC::ReturnCode_t PDController::onExecute(RTC::UniqueId ec_id)
 {
-	if(m_angleIn.isNew()){
+	if(m_angleIn.isNew())
 		m_angleIn.read();
-	}
+	if(m_angleRefIn.isNew())
+		m_angleRefIn.read();
 
 	for(size_t i=0; i < m_angle.data.length(); i++){
-		double q_ref = angleRef[i];
+		double q_ref = m_angleRef.data[i];
 		double q = m_angle.data[i];
 		double dq_ref = (q_ref - q_old_ref[i]) / dt;
 		double dq = (q - q_old[i]) / dt;
@@ -107,9 +108,10 @@ RTC::ReturnCode_t PDController::onExecute(RTC::UniqueId ec_id)
 			m_torque.data[i] = (1.0 - dq) * 100 - 0.2 * ddq;
 			dq_old = dq;
 		}
+		q_old_ref[i] = q_ref;
 		q_old[i] = q;
 	}
-	q_old_ref = angleRef;
+
 	m_torqueOut.write();
 
 	return RTC::RTC_OK;
