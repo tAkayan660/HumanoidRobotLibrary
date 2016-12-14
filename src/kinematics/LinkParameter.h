@@ -17,7 +17,7 @@
 using namespace std;
 using namespace Eigen;
 
-static const double eps = numeric_limits<double>::epsilon();
+static const double eps = 1e-06;
 static const double pi = boost::math::constants::pi<double>();
 
 //JAXON
