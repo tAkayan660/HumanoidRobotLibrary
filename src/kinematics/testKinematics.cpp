@@ -28,15 +28,17 @@ int main(int argc, char* argv[])
 	//Calculation Forward Kinematics
 	kine.calcForwardKinematics(WAIST);
 	Link RARM_LINK = ulink[RARM_JOINT7];
-	cout << RARM_LINK.p << endl;
-
-	RARM_LINK.p(2) += 0.01;
-	//Calculation Inverse Kinematics
-	if(kine.calcArmInverseKinematics(RARM_JOINT7, RARM_LINK)){
-		for(int i=18;i<=25;i++)
-			cout << rad2deg(ulink[i].q) << endl;
-	}else{
-		cout << "Calculation Inverse Kinematics Faild." << endl;
+	
+	for(int i=0;i<50;i++){
+		RARM_LINK.p(2) += 0.1;
+		//Calculation Inverse Kinematics
+		if(kine.calcArmInverseKinematics(RARM_JOINT7, RARM_LINK)){
+			for(int i=13;i<=25;i++)
+				cout << rad2deg(ulink[i].q) << endl;
+		}else{
+			cout << "Calculation Inverse Kinematics Faild." << endl;
+		}
+		cout << "\n";
 	}
 	return 0;
 }

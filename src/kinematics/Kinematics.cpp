@@ -110,7 +110,7 @@ bool Kinematics::calcInverseKinematics(int to, Link target)
 	idx = FindRoute(to);
 	Matrix<double,6,6> J = Matrix<double,6,6>::Zero();
 	Matrix<double,6,1> dq = Matrix<double,6,1>::Zero();
-	cout << calcJacobian(idx) << endl;
+	
 	for(int n=0;n<iteration;n++)
 	{
 		J = calcJacobian(idx);
@@ -129,6 +129,9 @@ bool Kinematics::calcInverseKinematics(int to, Link target)
 
 bool Kinematics::calcArmInverseKinematics(int to, Link target)
 {
+	ColPivHouseholderQR<MatrixXd> QR; //QR分解?
+	const double dampingConstantSqr = 1.0e-12;
+
 	const double lambda = 0.5;
 	const int iteration = 100;
 	vector<int> idx;
@@ -136,23 +139,23 @@ bool Kinematics::calcArmInverseKinematics(int to, Link target)
 	calcForwardKinematics(WAIST);
 	idx = FindRoute(to);
 	const int jsize = 11;//= idx.size();
-	for(size_t i=0;i<idx.size();i++)
-		cout << idx[i] << endl;
-
+	
 	Matrix<double,jsize,jsize> I = Matrix<double,jsize,jsize>::Identity();
 	Matrix<double,6,1> err;
 	Matrix<double,jsize,1> k = Matrix<double,jsize,1>::Zero();
 	Matrix<double,6,jsize> J = Matrix<double,6,jsize>::Zero();
 	Matrix<double,jsize,1> dq = Matrix<double,jsize,1>::Zero();
-	//J = calcJacobian(idx);
 	for(int n=0;n<iteration;n++){
 		J = calcJacobian(idx);
 		err = calcVWerr(target, ulink[to]);
 		if(err.norm() < eps) return true;
-		//cout << (J.transpose()*J).inverse()*J.transpose() << endl;
-		Matrix<double,jsize,6> J_inv = (J.transpose()*J).inverse()*J.transpose();
-		cout << J_inv << endl;
-		dq = J_inv*err;// + k*(I-J*J_inv);
+
+		//Matrix<double,jsize,6> J_inv = (J.transpose()*J).inverse()*J.transpose();
+		//dq = J_inv*err;// + k*(I-J*J_inv);
+		MatrixXd JJ;
+		JJ = J*J.transpose()+dampingConstantSqr*MatrixXd::Identity(J.rows(),J.rows());
+		dq = J.transpose() * QR.compute(JJ).solve(err) * lambda;
+		
 		for(size_t nn=0;nn<jsize;nn++){
 			int j = idx[nn];
 			ulink[j].q += dq(nn);
