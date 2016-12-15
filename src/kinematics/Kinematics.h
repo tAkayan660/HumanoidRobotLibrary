@@ -24,6 +24,7 @@ namespace MotionControl
 		void calcForwardKinematics(int rootlink);
 		MatrixXd calcJacobian(vector<int> idx); 
 		bool calcInverseKinematics(int to, Link target);
+		bool calcArmInverseKinematics(int to, Link target);
 		vector<int> FindRoute(int to);
 		Matrix<double,3,3> Rodrigues(Matrix<double,3,1> a, double q);
 		Matrix<double,3,1> rot2omega(Matrix<double,3,3> R);

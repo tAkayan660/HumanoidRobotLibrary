@@ -65,7 +65,7 @@ MatrixXd Kinematics::calcJacobian(vector<int> idx)
 {
 	size_t jsize = idx.size();
 	Matrix<double,3,1> target = ulink[idx.back()].p;
-	MatrixXd J = MatrixXd::Zero(6,6);
+	Matrix<double,6,11> J = MatrixXd::Zero(6,11);
 
 	for(size_t i=0;i<jsize;i++)
 	{
@@ -80,7 +80,7 @@ MatrixXd Kinematics::calcJacobian(vector<int> idx)
 }
 
 template <typename t_matrix>
-t_matrix Kinematics::PseudoInverse(const t_matrix& m, const double &tolerance=1e-06)
+t_matrix Kinematics::PseudoInverse(const t_matrix& m, const double &tolerance)
 {
 	typedef JacobiSVD<t_matrix> TSVD;
 	unsigned int svd_opt(ComputeThinU | ComputeThinV);
@@ -103,7 +103,6 @@ bool Kinematics::calcInverseKinematics(int to, Link target)
 {
 	const double lambda = 0.5;
 	const int iteration = 50;
-	size_t jsize;
 	vector<int> idx;
 	Matrix<double,6,1> err;
 
@@ -111,6 +110,7 @@ bool Kinematics::calcInverseKinematics(int to, Link target)
 	idx = FindRoute(to);
 	Matrix<double,6,6> J = Matrix<double,6,6>::Zero();
 	Matrix<double,6,1> dq = Matrix<double,6,1>::Zero();
+	cout << calcJacobian(idx) << endl;
 	for(int n=0;n<iteration;n++)
 	{
 		J = calcJacobian(idx);
@@ -119,6 +119,41 @@ bool Kinematics::calcInverseKinematics(int to, Link target)
 		dq = lambda * (J.inverse() * err);
 		for(size_t nn=0;nn<idx.size();nn++)
 		{
+			int j = idx[nn];
+			ulink[j].q += dq(nn);
+		}
+		calcForwardKinematics(WAIST);
+	}
+	return false;
+}
+
+bool Kinematics::calcArmInverseKinematics(int to, Link target)
+{
+	const double lambda = 0.5;
+	const int iteration = 100;
+	vector<int> idx;
+	
+	calcForwardKinematics(WAIST);
+	idx = FindRoute(to);
+	const int jsize = 11;//= idx.size();
+	for(size_t i=0;i<idx.size();i++)
+		cout << idx[i] << endl;
+
+	Matrix<double,jsize,jsize> I = Matrix<double,jsize,jsize>::Identity();
+	Matrix<double,6,1> err;
+	Matrix<double,jsize,1> k = Matrix<double,jsize,1>::Zero();
+	Matrix<double,6,jsize> J = Matrix<double,6,jsize>::Zero();
+	Matrix<double,jsize,1> dq = Matrix<double,jsize,1>::Zero();
+	//J = calcJacobian(idx);
+	for(int n=0;n<iteration;n++){
+		J = calcJacobian(idx);
+		err = calcVWerr(target, ulink[to]);
+		if(err.norm() < eps) return true;
+		//cout << (J.transpose()*J).inverse()*J.transpose() << endl;
+		Matrix<double,jsize,6> J_inv = (J.transpose()*J).inverse()*J.transpose();
+		cout << J_inv << endl;
+		dq = J_inv*err;// + k*(I-J*J_inv);
+		for(size_t nn=0;nn<jsize;nn++){
 			int j = idx[nn];
 			ulink[j].q += dq(nn);
 		}

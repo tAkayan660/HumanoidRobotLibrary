@@ -16,6 +16,6 @@ link_directories(
 	${Boost_LIBRARY_DIR}
 )
 
-add_executable(TestKinematics Kinematics.cpp Link.cpp testKinematics.cpp Kinematics.h Link.h PA10LinkParameter.h)
+add_executable(TestKinematics Kinematics.cpp Link.cpp testKinematics.cpp Kinematics.h Link.h)
 
 target_link_libraries(TestKinematics ${Boost_LIBRARIES})
