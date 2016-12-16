@@ -101,59 +101,27 @@ t_matrix Kinematics::PseudoInverse(const t_matrix& m, const double &tolerance)
 
 bool Kinematics::calcInverseKinematics(int to, Link target)
 {
-	const double lambda = 0.5;
-	const int iteration = 50;
-	vector<int> idx;
+	MatrixXd J, dq;
 	Matrix<double,6,1> err;
 
-	calcForwardKinematics(WAIST);
-	idx = FindRoute(to);
-	Matrix<double,6,6> J = Matrix<double,6,6>::Zero();
-	Matrix<double,6,1> dq = Matrix<double,6,1>::Zero();
-	
-	for(int n=0;n<iteration;n++)
-	{
-		J = calcJacobian(idx);
-		err = calcVWerr(target, ulink[to]);
-		if(err.norm() < eps) return true;
-		dq = lambda * (J.inverse() * err);
-		for(size_t nn=0;nn<idx.size();nn++)
-		{
-			int j = idx[nn];
-			ulink[j].q += dq(nn);
-		}
-		calcForwardKinematics(WAIST);
-	}
-	return false;
-}
-
-bool Kinematics::calcArmInverseKinematics(int to, Link target)
-{
 	ColPivHouseholderQR<MatrixXd> QR; //QR分解?
 	const double dampingConstantSqr = 1.0e-12;
-
 	const double lambda = 0.5;
 	const int iteration = 100;
-	vector<int> idx;
 	
 	calcForwardKinematics(WAIST);
-	idx = FindRoute(to);
-	const int jsize = 11;//= idx.size();
 	
-	Matrix<double,jsize,jsize> I = Matrix<double,jsize,jsize>::Identity();
-	Matrix<double,6,1> err;
-	Matrix<double,jsize,1> k = Matrix<double,jsize,1>::Zero();
-	Matrix<double,6,jsize> J = Matrix<double,6,jsize>::Zero();
-	Matrix<double,jsize,1> dq = Matrix<double,jsize,1>::Zero();
+	vector<int> idx = FindRoute(to);
+	const int jsize = idx.size();
+	
+	J.resize(6,jsize); dq.resize(jsize,1);
+
 	for(int n=0;n<iteration;n++){
 		J = calcJacobian(idx);
 		err = calcVWerr(target, ulink[to]);
 		if(err.norm() < eps) return true;
 
-		//Matrix<double,jsize,6> J_inv = (J.transpose()*J).inverse()*J.transpose();
-		//dq = J_inv*err;// + k*(I-J*J_inv);
-		MatrixXd JJ;
-		JJ = J*J.transpose()+dampingConstantSqr*MatrixXd::Identity(J.rows(),J.rows());
+		MatrixXd JJ = J*J.transpose()+dampingConstantSqr*MatrixXd::Identity(J.rows(),J.rows());
 		dq = J.transpose() * QR.compute(JJ).solve(err) * lambda;
 		
 		for(size_t nn=0;nn<jsize;nn++){
