@@ -16,7 +16,7 @@ using namespace Eigen;
 
 namespace cit
 {
-	const float MAX_ITERATION = 100;
+	const float MAX_ITERATION = 10000;
 
 	template <size_t dim>
 	class RiccatiEquation
@@ -39,11 +39,11 @@ namespace cit
 				Matrix<float,dim,dim> P_pre(Matrix<float,dim,dim>::Zero());
 				for(int i=0;i<MAX_ITERATION;i++)
 				{
-					K = (1.0/(R+b.transpose()*P*b))*b.transpose()*P;
+					K = (1.0/(R+b.transpose()*P*b))*b.transpose()*P*A;
 					P_pre = A.transpose()*P*A+c.transpose()*Q*c-A.transpose()*P*b*K;
 					if((abs((P-P_pre).array()) < 1e-10).all())
 					{
-						K = (1.0/(R+b.transpose()*P*b))*b.transpose()*P;
+						K = (1.0/(R+b.transpose()*P*b))*b.transpose()*P*A;
 						return false;
 					}
 					P = P_pre;
