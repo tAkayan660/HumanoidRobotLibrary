@@ -4,14 +4,16 @@ project(testPreviewControl)
 
 set(DCMAKE_BUILD_TYPE Debug)
 find_package(Eigen3 REQUIRED)
-find_package(PythonLibs REQUIRED)
+find_package(Boost COMPONENTS system thread filesystem timer)
 add_definitions(-lstdc++ -std=c++11)
+add_definitions(-DEIGEN_DONT_ALIGN)
 
 include_directories(
+	${Boost_INCLUDE_DIR}
+	${BOOST_INCLUDE_DIRS}
 	${EIGEN3_INCLUDE_DIR}
-	${PYTHON_INCLUDE_DIRS}
 )
 
 add_executable(testPreviewControl testPreviewControl.cpp PreviewControl.cpp PreviewControl.h)
 
-target_link_libraries(testPreviewControl ${PYTHON_LIBRARIES})
+target_link_libraries(testPreviewControl ${Boost_LIBRARIES})
