@@ -32,17 +32,16 @@ class FootInverseKinematicsTest
 	protected:
 		RTC::TimedDoubleSeq m_qCur;
 		InPort<RTC::TimedDoubleSeq> m_qCurIn;
-		RTC::TimedFloatSeq m_axes;
-		InPort<RTC::TimedFloatSeq> m_axesIn;
-		RTC::TimedBooleanSeq m_button;
-		InPort<RTC::TimedBooleanSeq> m_buttonIn;
 
 		RTC::TimedDoubleSeq m_qRef;
 		OutPort<RTC::TimedDoubleSeq> m_qRefOut;
 	private:
+		int count;
+		std::vector<Vector3d> rfoot_pos,lfoot_pos;
 		Kinematics *kine;
 		Link ulink[JOINT_NUM];
 		Link RFLink, LFLink;
+		Link target_R, target_L;
 };
 
 
