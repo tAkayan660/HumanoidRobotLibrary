@@ -1,8 +1,6 @@
 #include "LinearInvertedPendlum.h"
-#include "matplotlibcpp.h"
 
 using namespace cit;
-namespace plt = matplotlibcpp;
 
 int main(int argc, char* argv[])
 {
@@ -21,17 +19,9 @@ int main(int argc, char* argv[])
 		LIP.CalcGoalState();		//STEP 7
 		LIP.ModifyLandPos();		//STEP 8
 	}
-
-	plt::title("Gait Pattern by Linear Inverted Pendlum");
-	plt::xlabel("x[m]");
-	plt::ylabel("y[m]");
 	
-	plt::named_plot("Center of Mass", LIP.cog_list_x, LIP.cog_list_y, "b");
-	plt::named_plot("Foot Landing Pos", LIP.p_list_x, LIP.p_list_y, ".g");
-	plt::named_plot("Foot Landing Fixed Pos", LIP.p_modi_list_x, LIP.p_modi_list_y, "+r");
-	plt::legend();
-
-	plt::show();
-
+	/* Plot Gait Pattern */
+	LIP.plot_gait_pattern_list();
+	
 	return 0;
 }

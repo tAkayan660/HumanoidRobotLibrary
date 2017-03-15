@@ -68,5 +68,6 @@ namespace cit
 			void CalcWalkFragment();
 			void CalcGoalState();
 			void ModifyLandPos();
+			void plot_gait_pattern_list();
 	};
 }
