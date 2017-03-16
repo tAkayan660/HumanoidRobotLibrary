@@ -87,3 +87,14 @@ void LinearInvertedPendlum::ModifyLandPos()
 	p_modi_list_x.push_back(pxa); p_modi_list_y.push_back(pya);
 }
 
+void LinearInvertedPendlum::plot_gait_pattern_list()
+{	
+	FILE *gp = popen("gnuplot -persist\n", "w");
+	fprintf(gp, "set xlabel \"x [m]\"\n");
+	fprintf(gp, "set ylabel \"y [m]\"\n");
+	fprintf(gp, "plot '-' with lines lw 2, '-' with points lw 2\n");
+	for(std::size_t i=0;i<cog_list_x.size();i++) fprintf(gp, "%f\t%f\n", cog_list_x[i], cog_list_y[i]); fprintf(gp,"e\n");
+	for(std::size_t i=0;i<p_modi_list_x.size();i++) fprintf(gp, "%f\t%f\n", p_modi_list_x[i], p_modi_list_y[i]); fprintf(gp, "e\n");
+	fprintf(gp,"exit\n");
+	pclose(gp);
+}
