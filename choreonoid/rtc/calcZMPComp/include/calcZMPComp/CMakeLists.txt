@@ -1,4 +1,4 @@
-set(hdrs calcZMPComp.h
+set(hdrs calcZMP.h
     PARENT_SCOPE
     )
 

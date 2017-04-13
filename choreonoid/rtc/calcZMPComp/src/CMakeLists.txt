@@ -1,5 +1,7 @@
-set(comp_srcs calcZMPComp.cpp )
-set(standalone_srcs calcZMPCompComp.cpp)
+set(comp_srcs calcZMP.cpp )
+set(standalone_srcs calcZMPComp.cpp)
+
+find_package(Eigen3 REQUIRED)
 
 if (DEFINED OPENRTM_INCLUDE_DIRS)
   string(REGEX REPLACE "-I" ";"
@@ -28,6 +30,7 @@ include_directories(${PROJECT_BINARY_DIR})
 include_directories(${PROJECT_BINARY_DIR}/idl)
 include_directories(${OPENRTM_INCLUDE_DIRS})
 include_directories(${OMNIORB_INCLUDE_DIRS})
+include_directories(${EIGEN3_INCLUDE_DIRS})
 add_definitions(${OPENRTM_CFLAGS})
 add_definitions(${OMNIORB_CFLAGS})
 
