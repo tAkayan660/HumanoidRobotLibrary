@@ -28,9 +28,9 @@ items:
               0, 0, 1 ]
             jointPositions: [ 
                0.000000,  0.000000, -0.261799,  0.785398, -0.523599,  0.000000,  0.000000,  0.000000, -0.261799,  0.785398, 
-              -0.523599,  0.000000,  0.000000,  0.000000,  0.000000,  0.000000,  0.000000,  0.000000,  0.785398, -0.261799, 
-               0.000000, -1.570796, -0.261799,  0.000000, -0.785398,  0.000000,  0.785398,  0.261799,  0.000000, -1.570796, 
-               0.261799,  0.000000, -0.785398, -1.221730,  1.221730, -1.221730,  1.221730,  0.000000 ]
+              -0.523599,  0.000000,  0.000000,  0.000000,  0.000000,  0.000000,  0.000000,  0.000000,  0.610865, -0.261799, 
+               0.000000, -1.221730, -0.261799,  0.000000, -0.436332,  0.000000,  0.610865,  0.261799,  0.000000, -1.221730, 
+               0.261799,  0.000000, -0.436332,  0.000000,  0.000000,  0.000000,  0.000000,  0.000000 ]
             initialRootPosition: [ 0, 0, 1.0225 ]
             initialRootAttitude: [ 
               1, 0, 0, 
@@ -103,7 +103,7 @@ items:
             integrationMode: "Runge Kutta"
             gravity: [ 0, 0, -9.80665 ]
             staticFriction: 1
-            slipFriction: 1
+            dynamicFriction: 1
             cullingThresh: 0.005
             contactCullingDepth: 0.05
             errorCriterion: 0.001
@@ -166,6 +166,7 @@ views:
       normalVisualization: false
       normalLength: 0.01
       coordinateAxes: true
+      fpsTestIteration: 1
       showFPS: false
       enableNewDisplayListDoubleRendering: false
       useBufferForPicking: true
@@ -176,9 +177,9 @@ views:
           fieldOfView: 0.6978
           near: 0.01
           far: 100
-          eye: [ 2.92672089, 1.92670801, 1.5671921 ]
-          direction: [ -0.784404547, -0.576314849, -0.229283017 ]
-          up: [ -0.184773032, -0.135755768, 0.973359799 ]
+          eye: [ 3.7721409, 2.5777943, 2.07364638 ]
+          direction: [ -0.651693864, -0.689594591, -0.315839212 ]
+          up: [ -0.216934776, -0.229551107, 0.948812728 ]
         - 
           camera: [ System, Orthographic ]
           orthoHeight: 20
@@ -318,12 +319,12 @@ viewAreas:
     contents: 
       type: splitter
       orientation: horizontal
-      sizes: [ 0, 1637 ]
+      sizes: [ 0, 1873 ]
       children: 
         - 
           type: splitter
           orientation: vertical
-          sizes: [ 464, 464 ]
+          sizes: [ 479, 479 ]
           children: 
             - 
               type: pane
@@ -336,17 +337,17 @@ viewAreas:
         - 
           type: splitter
           orientation: vertical
-          sizes: [ 928, 0 ]
+          sizes: [ 958, 0 ]
           children: 
             - 
               type: splitter
               orientation: horizontal
-              sizes: [ 0, 1631 ]
+              sizes: [ 0, 1867 ]
               children: 
                 - 
                   type: pane
                   views: [ 4, 5 ]
-                  current: 4
+                  current: 5
                 - 
                   type: pane
                   views: [ 3 ]
