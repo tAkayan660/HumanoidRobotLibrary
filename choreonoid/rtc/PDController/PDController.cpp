@@ -38,7 +38,7 @@ void PDController::ReadGain(size_t numJoints,std::vector<double> &pgain,std::vec
 	FILE *PDGain;
 	float temp_pgain,temp_dgain;
 	char joint_name[20];
-	PDGain = fopen("/usr/lib/choreonoid-1.5/rtc/pdgain.txt","r");
+	PDGain = fopen("/usr/lib/choreonoid-1.6/rtc/pdgain.txt","r");
 
 	pgain.clear(); dgain.clear();
 
