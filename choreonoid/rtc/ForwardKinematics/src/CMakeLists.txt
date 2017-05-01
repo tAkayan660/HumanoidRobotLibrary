@@ -22,8 +22,9 @@ if (DEFINED OPENRTM_LIBRARIES)
     OPENRTM_LIBRARIES "${OPENRTM_LIBRARIES}")
 endif (DEFINED OPENRTM_LIBRARIES)
 
-set(EIGEN3_INCLUDE_DIR $ENV{EIGEN3_INCLUDE_DIR} CACHE PATH "Eigen installation dir(Default: $EIGEN_HOME)")
-include_directories(${EIGEN3_INCLUDE_DIR})
+set(EIGEN3_INCLUDE_DIRS $ENV{EIGEN3_INCLUDE_DIRS} CACHE PATH "Eigen installation dir(Default: $EIGEN_HOME)")
+
+include_directories(${EIGEN3_INCLUDE_DIRS})
 include_directories(${PROJECT_SOURCE_DIR}/include)
 include_directories(${PROJECT_SOURCE_DIR}/include/${PROJECT_NAME})
 include_directories(${PROJECT_BINARY_DIR})

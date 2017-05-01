@@ -2,7 +2,8 @@ set(comp_srcs FootInverseKinematicsTest.cpp Kinematics.cpp Link.cpp)
 set(standalone_srcs FootInverseKinematicsTestComp.cpp)
 
 find_package(Boost COMPONENTS system thread filesystem)
-find_package(Eigen3 REQUIRED)
+
+set(EIGEN3_INCLUDE_DIRS $ENV{EIGEN3_INCLUDE_DIRS} CACHE PATH "Eigen installation dir(Default: $EIGEN_HOME)")
 
 if (DEFINED OPENRTM_INCLUDE_DIRS)
   string(REGEX REPLACE "-I" ";"
@@ -31,7 +32,7 @@ include_directories(${PROJECT_BINARY_DIR})
 include_directories(${PROJECT_BINARY_DIR}/idl)
 include_directories(${OPENRTM_INCLUDE_DIRS})
 include_directories(${OMNIORB_INCLUDE_DIRS})
-include_directories(${EIGEN3_INCLUDE_DIR})
+include_directories(${EIGEN3_INCLUDE_DIRS})
 include_directories(${Boost_INCLUDE_DIRS})
 add_definitions(${OPENRTM_CFLAGS})
 add_definitions(${OMNIORB_CFLAGS})
