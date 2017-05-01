@@ -93,7 +93,7 @@ RTC::ReturnCode_t ArmInverseKinematicsTest::onExecute(RTC::UniqueId ec_id)
 		RARM_Link.p(1) += m_axes.data[0]*0.1;
 		RARM_Link.p(2) += m_axes.data[3]*0.1;
 
-		if(arm->calcArmInverseKinematics(RARM_JOINT7, RARM_Link)){
+		if(arm->calcInverseKinematics(RARM_JOINT7, RARM_Link)){
 			for(int i=13;i<=25;i++)
 				m_qRef.data[i-1] = ulink[i].q;
 		}else{
