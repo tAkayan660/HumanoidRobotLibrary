@@ -21,7 +21,7 @@ items:
           data: 
             modelFile: "${PROJECT_DIR}/JAXONmain.yaml"
             currentBaseLink: "WAIST"
-            rootPosition: [ -0.0107, 0, 0.9587 ]
+            rootPosition: [ -0.0107, 0, 0.9786 ]
             rootAttitude: [ 
               1, 0, 0, 
               0, 1, 0, 
@@ -177,9 +177,9 @@ views:
           fieldOfView: 0.6978
           near: 0.01
           far: 100
-          eye: [ 5.23188693, 2.82361183, 4.14305318 ]
-          direction: [ -0.620699708, -0.516103693, -0.590227796 ]
-          up: [ -0.453837398, -0.377359864, 0.807236737 ]
+          eye: [ 4.63973337, 2.24994915, 3.22438434 ]
+          direction: [ -0.634394835, -0.56051458, -0.532321894 ]
+          up: [ -0.398919663, -0.352462339, 0.846542026 ]
         - 
           camera: [ System, Orthographic ]
           orthoHeight: 20
@@ -347,7 +347,7 @@ viewAreas:
                 - 
                   type: pane
                   views: [ 4, 5 ]
-                  current: 5
+                  current: 4
                 - 
                   type: pane
                   views: [ 3 ]
