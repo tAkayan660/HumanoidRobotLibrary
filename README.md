@@ -1,4 +1,4 @@
-## HumanoidRobotLibrary
+## Biped Control Library
 
 [![Join the chat at https://gitter.im/open-rdc/HumanoidRobotLibrary](https://badges.gitter.im/open-rdc/HumanoidRobotLibrary.svg)](https://gitter.im/open-rdc/HumanoidRobotLibrary?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 This repository is library to control humanoid robot.  
