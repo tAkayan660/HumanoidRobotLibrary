@@ -1,7 +1,7 @@
 set(comp_srcs calcZMP.cpp )
 set(standalone_srcs calcZMPComp.cpp)
 
-find_package(Eigen3 REQUIRED)
+set(EIGEN3_INCLUDE_DIRS $ENV{EIGEN3_INCLUDE_DIRS} CACHE PATH "Eigen installation dir(Default: $EIGEN_HOME)")
 
 if (DEFINED OPENRTM_INCLUDE_DIRS)
   string(REGEX REPLACE "-I" ";"
