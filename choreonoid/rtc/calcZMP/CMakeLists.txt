@@ -22,11 +22,8 @@ link_directories(${CHOREONOID_LIBRARY_DIRS})
 ####
 ## for each component
 ##
-set(comp_name ForwardKinematics)
+set(comp_name calcZMP)
 set(comp_sources ${comp_name}.cpp)
-
-set(comp_sources ${comp_sources} Kinematics.cpp)
-set(comp_sources ${comp_sources} Link.cpp)# to be revise tvmet
 
 add_library(${comp_name} SHARED ${comp_sources})
 target_link_libraries(${comp_name} ${OPENRTM_LIBRARIES})
