@@ -8,5 +8,5 @@ This repository is library to control humanoid robot.
 
 This software is released under the BSD License, see LICENSE.  
 
-#Reference
+# Reference
 [ヒューマノイドロボット](http://shop.ohmsha.co.jp/shop/shopdetail.html?brandcode=000000002604&search=4-274-20058-2&sort=)
