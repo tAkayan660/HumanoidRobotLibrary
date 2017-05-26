@@ -41,8 +41,8 @@ int main(int argc, char *argv[])
 	Vector2d tP_B(Vector2d::Zero());
 	double tth_B = 0.0;
 	// 目標蹴脚ベクトル
-	Vector2d dP_K(Vector2d(0.0, 0.08)), dP_K_old(Vector2d(0.0, 0.08));
-	double dth_K = 0.0;
+	Vector2d dP_K(Vector2d(0.0, 0.0)), dP_K_old(Vector2d(0.0, 0.0));
+	double dth_K = 0.0, dthk_old = 0.0;
 	// 蹴足の相対位置ベクトル
 	Vector2d P_FB(Vector2d::Zero());
 	double th_FB = 0.0;
@@ -51,22 +51,24 @@ int main(int argc, char *argv[])
 	double dth_B = 0.0;
 
 	int time_count = 0;
-	const int MAX_TIME = 5;
+	const int MAX_TIME1 = 3;
+	const int MAX_TIME2 = 8;
+	const int MAX_TIME3 = 15;
 
 	dpk_list.push_back(dP_K);
 
 	// 収束ループ
 	while(1){
 		if(status == START){
-			if(support_leg == RLEG) P_FB << 0.0, -0.08;
-			else if(support_leg == LLEG) P_FB << 0.0, 0.08;
+			if(support_leg == RLEG) P_FB << 0.0, -0.04;
+			else if(support_leg == LLEG) P_FB << 0.0, 0.04;
 			status = WALK;
 		}else if(status == WALK){
-			if(support_leg == RLEG) P_FB << 0.03, -0.08;
-			else if(support_leg == LLEG) P_FB << 0.03, 0.08; 
+			if(support_leg == RLEG) P_FB << 0.03, -0.04;
+			else if(support_leg == LLEG) P_FB << 0.03, 0.04; 
 		}else if(status == STOP){
-			if(support_leg == RLEG) P_FB << 0.0, -0.08;
-			else if(support_leg == LLEG) P_FB << 0.0, 0.08;
+			if(support_leg == RLEG) P_FB << 0.0, -0.04;
+			else if(support_leg == LLEG) P_FB << 0.0, 0.04;
 		}
 
 		if(support_leg == RLEG) support_leg = LLEG;
@@ -76,32 +78,44 @@ int main(int argc, char *argv[])
 		dP_K = tP_B + CoordinatesTransform(P_FB, tth_B);
 		dth_K = tth_B + th_FB;
 
-		cout << dP_K[0] << " " << dP_K[1] << endl; 
+		cout << tP_B[0] << " " << tP_B[1] << " " << dP_K[0] << " " << dP_K[1] << endl; 
 
 		dpk_list.push_back(dP_K);
 		tpb_list.push_back(tP_B);
 
 		// 一時体幹位置ベクトル
 		dP_B = (dP_K + dP_K_old) / 2.0;
-		//dth_B = dth_K + dthk_old / 2.0;
+		dth_B = dth_K + dthk_old / 2.0;
 
 		dpb_list.push_back(dP_B);
 		
 		dP_K_old = dP_K;
-		
+		dthk_old = dth_K;
 
 		if(status == STOP) break;
 
 		time_count++;
-		if(MAX_TIME <= time_count) status = STOP;
+		if(MAX_TIME3 <= time_count) status = STOP;
 
-		tP_B = tP_B + Vector2d(0.05, 0.0);
-		tth_B += 0.0;
+		if(time_count < MAX_TIME1){
+			tP_B = tP_B + Vector2d(0.03, 0.0);
+			tth_B += 0.0;
+		}else if(MAX_TIME1 <= time_count && time_count < MAX_TIME2){
+			tP_B = tP_B + Vector2d(0.03, 0.03);
+			tth_B += 0.0;
+		}else if(MAX_TIME2 <= time_count && time_count <= MAX_TIME3){
+			tP_B = tP_B + Vector2d(0.03, -0.03);
+			tth_B -= 0.0;
+		}
 	}
+	
+	dpk_list.push_back(tP_B);
+
+	cout << tP_B << endl;
 
 	FILE *gp = popen("gnuplot -persist\n","w");
-	fprintf(gp, "set xrange [-0.005:0.5]\n");
-	fprintf(gp, "set yrange [-0.15:0.5]\n");
+	fprintf(gp, "set xrange [-0.005:0.65]\n");
+	fprintf(gp, "set yrange [-0.15:0.8]\n");
 	fprintf(gp, "set xlabel \"x [m]\"\n");
 	fprintf(gp, "set ylabel \"y [m]\"\n");
 	fprintf(gp, "plot '-' with lines lw 2 lc rgb \"blue\" ,'-' with points pt 2 lc rgb \"red\",'-' with points pt 2 lc rgb \"cyan\"\n");
