@@ -64,8 +64,8 @@ int main(int argc, char *argv[])
 			else if(support_leg == LLEG) P_FB << 0.0, 0.04;
 			status = WALK;
 		}else if(status == WALK){
-			if(support_leg == RLEG) P_FB << 0.03, -0.04;
-			else if(support_leg == LLEG) P_FB << 0.03, 0.04; 
+			if(support_leg == RLEG) P_FB << 0.01, -0.04;
+			else if(support_leg == LLEG) P_FB << 0.01, 0.04; 
 		}else if(status == STOP){
 			if(support_leg == RLEG) P_FB << 0.0, -0.04;
 			else if(support_leg == LLEG) P_FB << 0.0, 0.04;
