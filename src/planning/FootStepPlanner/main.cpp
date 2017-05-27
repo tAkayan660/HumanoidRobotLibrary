@@ -55,8 +55,14 @@ int main(int argc, char *argv[])
 	const int MAX_TIME2 = 8;
 	const int MAX_TIME3 = 15;
 
-	dpk_list.push_back(dP_K);
+	double time = 0.0;
+	double half_period = 0.32;
+	vector<Vector3d> refzmp_list;
 
+	dpk_list.push_back(dP_K);
+	refzmp_list.push_back(Vector3d(time, dP_K[0], dP_K[1]));
+
+	time = 0.32;
 	// 収束ループ
 	while(1){
 		if(status == START){
@@ -78,8 +84,6 @@ int main(int argc, char *argv[])
 		dP_K = tP_B + CoordinatesTransform(P_FB, tth_B);
 		dth_K = tth_B + th_FB;
 
-		cout << tP_B[0] << " " << tP_B[1] << " " << dP_K[0] << " " << dP_K[1] << endl; 
-
 		dpk_list.push_back(dP_K);
 		tpb_list.push_back(tP_B);
 
@@ -88,6 +92,10 @@ int main(int argc, char *argv[])
 		dth_B = dth_K + dthk_old / 2.0;
 
 		dpb_list.push_back(dP_B);
+
+		// 目標ZMPリスト
+		refzmp_list.push_back(Vector3d(time, dP_K[0], dP_K[1]));
+		time += half_period;
 		
 		dP_K_old = dP_K;
 		dthk_old = dth_K;
@@ -110,8 +118,11 @@ int main(int argc, char *argv[])
 	}
 	
 	dpk_list.push_back(tP_B);
+	refzmp_list.push_back(Vector3d(time+2.0-0.32,tP_B[0], tP_B[1]));
 
-	cout << tP_B << endl;
+	for(size_t i=0;i<refzmp_list.size(); i++){
+		cout<<refzmp_list[i](0) << " " << refzmp_list[i](1) << " " << refzmp_list[i](2) << endl;
+	}
 
 	FILE *gp = popen("gnuplot -persist\n","w");
 	fprintf(gp, "set xrange [-0.005:0.65]\n");
