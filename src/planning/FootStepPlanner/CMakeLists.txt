@@ -14,6 +14,6 @@ include_directories(
 	${EIGEN3_INCLUDE_DIR}
 )
 
-add_executable(testFootPlanner main.cpp)
+add_executable(testFootPlanner main.cpp PreviewControl.cpp)
 
 target_link_libraries(testFootPlanner ${Boost_LIBRARIES})

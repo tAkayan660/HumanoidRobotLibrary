@@ -5,6 +5,8 @@
 
 #include <Eigen/Core>
 
+#include "PreviewControl.h"
+
 using namespace std;
 using namespace Eigen;
 
@@ -26,6 +28,8 @@ Vector2d CoordinatesTransform(Vector2d vec, double th);
 
 int main(int argc, char *argv[])
 {
+	preview_control preview_node(0.01, 1.6, 0.26);
+
 	leg_type support_leg = RLEG;
 	walk_type status = START;
 
@@ -120,8 +124,12 @@ int main(int argc, char *argv[])
 	dpk_list.push_back(tP_B);
 	refzmp_list.push_back(Vector3d(time+2.0-0.32,tP_B[0], tP_B[1]));
 
-	for(size_t i=0;i<refzmp_list.size(); i++){
-		cout<<refzmp_list[i](0) << " " << refzmp_list[i](1) << " " << refzmp_list[i](2) << endl;
+	preview_node.interpolation_zmp_trajectory(refzmp_list);
+
+	vector<Vector2d> com_pos_list;
+	Vector2d com_pos, com_vel, com_acc;
+	while(preview_node.update(com_pos, com_vel, com_acc)){
+		com_pos_list.push_back(com_pos);
 	}
 
 	FILE *gp = popen("gnuplot -persist\n","w");
@@ -129,10 +137,11 @@ int main(int argc, char *argv[])
 	fprintf(gp, "set yrange [-0.15:0.8]\n");
 	fprintf(gp, "set xlabel \"x [m]\"\n");
 	fprintf(gp, "set ylabel \"y [m]\"\n");
-	fprintf(gp, "plot '-' with lines lw 2 lc rgb \"blue\" ,'-' with points pt 2 lc rgb \"red\",'-' with points pt 2 lc rgb \"cyan\"\n");
+	fprintf(gp, "plot '-' with lines lw 2 lc rgb \"blue\" ,'-' with points pt 2 lc rgb \"red\",'-' with points pt 2 lc rgb \"cyan\", '-' with lines lw 2 lc rgb \"green\" \n");
 	for(size_t i=0;i<dpk_list.size();i++) fprintf(gp, "%f\t%f\n", dpk_list[i](0), dpk_list[i](1)); fprintf(gp,"e\n");
 	for(size_t i=0;i<tpb_list.size();i++) fprintf(gp, "%f\t%f\n", tpb_list[i](0), tpb_list[i](1)); fprintf(gp,"e\n");
 	for(size_t i=0;i<dpb_list.size();i++) fprintf(gp, "%f\t%f\n", dpb_list[i](0), dpb_list[i](1)); fprintf(gp,"e\n");
+	for(size_t i=0;i<com_pos_list.size();i++) fprintf(gp, "%f\t%f\n", com_pos_list[i](0), com_pos_list[i](1)); fprintf(gp,"e\n");
 	fprintf(gp,"exit\n");
 	pclose(gp);
 
