@@ -70,7 +70,7 @@ private:
 
 void print_usage()
 {
-	std::cerr << "Usage: GaitPatternGenerator [param] [test-name]" << std::endl;
+	std::cerr << "Usage: testGaitPatternGenerator [param] [test-name]" << std::endl;
 	std::cerr << "[param]:" << std::endl;
 	std::cerr << "	step: max number of foot steps." << std::endl;
 	std::cerr << "[test-name]:" << std::endl;
