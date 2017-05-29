@@ -32,6 +32,11 @@ public:
 			tP_B += Vector2d(torso_x, torso_y); tth_B += torso_th;
 		}
 
+		preview_node->interpolation_zmp_trajectory(plan_node->refzmp_list);
+
+		for(size_t i=0;i<plan_node->refzmp_list.size();i++)
+			cout << plan_node->refzmp_list[i](0) << " " << plan_node->refzmp_list[i](1) << " " << plan_node->refzmp_list[i](2) << endl;
+
 		Vector2d com_pos, com_vel, com_acc;
 		while(preview_node->update(com_pos, com_vel, com_acc)){
 			Vector2d temp_refzmp; RowVector2d temp_outputzmp;
@@ -40,19 +45,20 @@ public:
 
 			com_pos_list.push_back(com_pos);
 			refzmp.push_back(temp_refzmp);
-			outputzmp.push_back(temp_outputzmp);
+			outputzmp.push_back(temp_outputzmp.transpose());
 		}
+		cout << com_pos_list.size() << endl;
 	}
 	void plot_gait_pattern()
 	{
-		gp = popen("gnuplot -persist\n", "w");
+		FILE *gp = popen("gnuplot -persist\n", "w");
 		fprintf(gp, "set xlabel \"x [m]\"\n");
 		fprintf(gp, "set ylabel \"y [m]\"\n");
 
-		fprintf(gp,"plot '-'");
+		fprintf(gp, "plot '-' with lines lw 2, '-' with lines lw 2, '-' with lines lw 2\n");
 		for(size_t i=0;i<com_pos_list.size();i++) fprintf(gp, "%f\t%f\n", com_pos_list[i](0), com_pos_list[i](1)); fprintf(gp, "e\n");
-		for(size_t i=0;i<refzmp.size();i++) fprintf(gp, "%f\t%f\n", refzmp[i](0), refzmp[i](1)); fprintf(gp, "e\n");
-		for(size_t i=0;i<outputzmp.size();i++) fprintf(gp, "%f\t%f\n", outputzmp[i](0), outputzmp[i](1)); fprintf(gp, "e\n");
+		//for(size_t i=0;i<refzmp.size();i++) fprintf(gp, "%f\t%f\n", refzmp[i](0), refzmp[i](1)); fprintf(gp, "e\n");
+		//for(size_t i=0;i<outputzmp.size();i++) fprintf(gp, "%f\t%f\n", outputzmp[i](0), outputzmp[i](1)); fprintf(gp, "e\n");
 		fprintf(gp, "exit\n");
 		pclose(gp);
 	}
@@ -81,7 +87,7 @@ int main(int argc, char *argv[])
 {
 	testGaitGenerator tgg(0.01, 0.32, 0.27);
 
-	if(2 < argc){
+	if(1 < argc){
 		if(string(argv[1]) == "--test0") 
 			tgg.run(10, 0.03, 0.0, 0.0);
 		else if(string(argv[1]) == "--test1")
