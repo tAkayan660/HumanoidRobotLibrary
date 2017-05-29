@@ -13,12 +13,12 @@ int main(int argc, char *argv[])
 
 	preview_control preview_control(0.01, 1.6, 0.27);
 
-	foot_step_list.push_back(Vector4d(0.0,0.0,0.0,0.0));
-	foot_step_list.push_back(Vector4d(0.32,0.0,0.05,0.0));
-	foot_step_list.push_back(Vector4d(0.64,0.01,-0.05,0.0));
-	foot_step_list.push_back(Vector4d(0.96,0.02,0.05,0.0));
-	foot_step_list.push_back(Vector4d(1.28,0.02,0.0,0.0));
-	foot_step_list.push_back(Vector4d(3.28,0.02,0.0,0.0));
+	foot_step_list.push_back(Vector3d(0.0,0.0,0.0));
+	foot_step_list.push_back(Vector3d(0.32,0.0,0.05));
+	foot_step_list.push_back(Vector3d(0.64,0.01,-0.05));
+	foot_step_list.push_back(Vector3d(0.96,0.02,0.05));
+	foot_step_list.push_back(Vector3d(1.28,0.02,0.0));
+	foot_step_list.push_back(Vector3d(3.28,0.02,0.0));
 	
 	preview_control.interpolation_zmp_trajectory(foot_step_list);
 

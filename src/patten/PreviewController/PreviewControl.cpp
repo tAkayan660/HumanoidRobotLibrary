@@ -1,6 +1,6 @@
 #include "PreviewControl.h"
 
-void preview_control::interpolation_zmp_trajectory(vector<Vector4d> foot_step_list)
+void preview_control::interpolation_zmp_trajectory(vector<Vector3d> foot_step_list)
 {
 	size_t foot_step_count = 1;
 	size_t size = foot_step_list.size();

@@ -67,7 +67,7 @@ class preview_control
 			}
 			return false;
 		}
-		void interpolation_zmp_trajectory(vector<Vector4d> foot_step_list);
+		void interpolation_zmp_trajectory(vector<Vector3d> foot_step_list);
 		void set_com_param(Vector2f &com_pos, Vector2f &com_vel, Vector2f &com_acc);
 		void get_ref_zmp(Matrix<double,2,1> &refzmp){refzmp = this->temp_refzmp;}
 		void output_zmp(Matrix<double,1,2> &output_zmp){output_zmp = this->p;}
