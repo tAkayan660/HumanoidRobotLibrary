@@ -6,7 +6,7 @@ int main(int argc, char *argv[])
 {
 	FILE *gp;
 	Vector2d com_pos, com_vel, com_acc;
-	vector<Vector4d> foot_step_list;
+	vector<Vector3d> foot_step_list;
 	vector<Vector2d> cog_list, refzmp, outputzmp;
 
 	boost::timer::cpu_timer process_timer;
