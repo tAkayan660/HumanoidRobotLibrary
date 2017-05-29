@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 2.8)
 
-project(testGaitGenerator)
+project(testGaitPatternGenerator)
 
 set(DCMAKE_BUILD_TYPE Debug)
 find_package(Eigen3 REQUIRED)
@@ -14,9 +14,11 @@ include_directories(
 	${EIGEN3_INCLUDE_DIR}
 )
 
-add_executable(testGaitGenerator 
+add_executable(testGaitPatternGenerator 
 	GaitPatternGenerator.cpp
 	../../planning/FootStepPlanner/FootStepPlanner.cpp
 	../../patten/PreviewController/PreviewControl.cpp)
 
-target_link_libraries(testGaitGenerator ${Boost_LIBRARIES})
+target_link_libraries(testGaitPatternGenerator ${Boost_LIBRARIES})
+
+install(TARGETS testGaitPatternGenerator RUNTIME DESTINATION bin)
