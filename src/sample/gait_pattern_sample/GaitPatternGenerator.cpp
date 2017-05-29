@@ -97,7 +97,7 @@ int main(int argc, char *argv[])
 		else if(string(argv[2]) == "--test2")
 			tgg.run(max_step, 0.0, 0.03, 0.0);
 		else if(string(argv[2]) == "--test3")
-			tgg.run(max_step, 0.03, -0.03, 0.0);
+			tgg.run(max_step, 0.0, -0.03, 0.0);
 		else if(string(argv[2]) == "--test4")
 			tgg.run(max_step, 0.0, 0.0, 5.0);
 		else if(string(argv[2]) == "--test5")
