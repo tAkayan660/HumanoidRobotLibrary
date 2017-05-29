@@ -15,3 +15,5 @@ include_directories(
 add_executable(LIP main.cpp LinearInvertedPendlum.cpp LinearInvertedPendlum.h)
 
 target_link_libraries(LIP ${PYTHON_LIBRARIES})
+
+install(TARGETS LIP RUNTIME DESTINATION bin)

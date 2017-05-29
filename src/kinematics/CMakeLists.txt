@@ -19,3 +19,5 @@ link_directories(
 add_executable(TestKinematics Kinematics.cpp Link.cpp testKinematics.cpp Kinematics.h Link.h)
 
 target_link_libraries(TestKinematics ${Boost_LIBRARIES})
+
+install(TARGETS TestKinematics RUNTIME DESTINATION bin)
