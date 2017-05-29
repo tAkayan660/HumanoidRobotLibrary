@@ -28,7 +28,7 @@ public:
 	std::vector<Vector2d> dpk_list;		// 目標脚配置リスト
 private:
 	double foot_time, foot_period;
-	double dist_offset, swing_step;
+	double dist_offset, preview_delay;
 
 	Vector2d dP_K;
 	Vector2d PFB;
