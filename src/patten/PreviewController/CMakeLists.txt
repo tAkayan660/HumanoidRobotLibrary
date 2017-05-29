@@ -17,3 +17,5 @@ include_directories(
 add_executable(testPreviewControl testPreviewControl.cpp PreviewControl.cpp PreviewControl.h)
 
 target_link_libraries(testPreviewControl ${Boost_LIBRARIES})
+
+install(TARGETS testPreviewControl RUNTIME DESTINATION bin)

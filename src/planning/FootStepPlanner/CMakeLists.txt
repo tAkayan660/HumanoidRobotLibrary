@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 2.8)
 
-project(testFootPlanner)
+project(testFootStepPlanner)
 
 set(DCMAKE_BUILD_TYPE Debug)
 find_package(Eigen3 REQUIRED)
@@ -14,6 +14,8 @@ include_directories(
 	${EIGEN3_INCLUDE_DIR}
 )
 
-add_executable(testFootPlanner main.cpp FootStepPlanner.cpp)
+add_executable(testFootStepPlanner main.cpp FootStepPlanner.cpp)
 
-target_link_libraries(testFootPlanner ${Boost_LIBRARIES})
+target_link_libraries(testFootStepPlanner ${Boost_LIBRARIES})
+
+install(TARGETS testFootStepPlanner RUNTIME DESTINATION bin)

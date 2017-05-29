@@ -17,3 +17,5 @@ include_directories(
 add_executable(testFootPlanner testFootPlanner.cpp FootPlanner.cpp FootPlanner.h)
 
 target_link_libraries(testFootPlanner ${Boost_LIBRARIES})
+
+install(TARGETS testFootPlanner RUNTIME DESTINATION bin)

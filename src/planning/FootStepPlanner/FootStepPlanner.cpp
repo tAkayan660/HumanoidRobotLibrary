@@ -6,7 +6,7 @@ double deg2rad(double degree)
 }
 
 FootStepPlanner::FootStepPlanner(double _foot_period, double _dist_offset)
-	: foot_period(_foot_period), foot_time(0.0), swing_step(0.01),
+	: foot_period(_foot_period), foot_time(0.32), preview_delay(2.0),
 		dist_offset(_dist_offset), support_leg(RLEG), status(START),
 		dP_K(Vector2d::Zero())
 {
@@ -14,6 +14,7 @@ FootStepPlanner::FootStepPlanner(double _foot_period, double _dist_offset)
 	refzmp_list.push_back(Vector3d(0.0, 0.0, 0.0));
 }
 
+// 座標変換(2D)
 Vector2d FootStepPlanner::CoordinatesTransform(Vector2d vec, double th)
 {
 	Vector2d trans_vec(Vector2d::Zero());
@@ -27,8 +28,6 @@ Vector2d FootStepPlanner::CoordinatesTransform(Vector2d vec, double th)
 // 次の目標体幹位置に対する目標脚位置
 void FootStepPlanner::getNextStep(Vector2d tP_B, double tth_B)
 {
-	if(tP_B[0] < 0) swing_step = -1*swing_step;
-
 	shiftFootVec();
 
 	dP_K = tP_B + CoordinatesTransform(PFB, tth_B);
@@ -42,27 +41,21 @@ void FootStepPlanner::getNextStep(Vector2d tP_B, double tth_B)
 
 	if(status == STOP){
 		dpk_list.push_back(tP_B);
-		refzmp_list.push_back(Vector3d(foot_time-foot_period+2.0, tP_B[0], tP_B[1]));
+		refzmp_list.push_back(Vector3d(foot_time, tP_B[0], tP_B[1]));
+		refzmp_list.push_back(Vector3d(foot_time+preview_delay, tP_B[0], tP_B[1]));	// For Preview Control
 	}
 }
 
 // 目標体幹位置における脚先の相対位置
 void FootStepPlanner::shiftFootVec()
 {
-	if(status == START){
-		if(support_leg == RLEG) PFB << 0.0, -dist_offset;
-		else if(support_leg == LLEG) PFB << 0.0, dist_offset;
-		status = WALK;
-	}else if(status == WALK){
-		if(support_leg == RLEG) PFB << swing_step, -dist_offset;
-		else if(support_leg == LLEG) PFB << swing_step, dist_offset;
-	}else if(status == STOP){
-		if(support_leg == RLEG) PFB << 0.0, -dist_offset;
-		else if(support_leg) PFB << 0.0, dist_offset;
+	if(support_leg == RLEG){
+		support_leg = LLEG;
+		PFB << 0.0, -dist_offset;
+	}else if(support_leg == LLEG){
+		support_leg = RLEG;
+		PFB << 0.0, dist_offset;
 	}
-
-	if(support_leg == RLEG) support_leg = LLEG;
-	else if(support_leg == LLEG) support_leg = RLEG;
 }
 
 // フットプリントをプロット
