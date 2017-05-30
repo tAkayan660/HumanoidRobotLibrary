@@ -10,26 +10,23 @@
 
 #include "Link.h"
 
-namespace MotionControl
+class Kinematics
 {
-	class Kinematics
+public:
+	struct Link *ulink;
+public:
+	Kinematics(Link *ulink)
 	{
-	public:
-		struct Link *ulink;
-	public:
-		Kinematics(Link *ulink)
-		{
-			this->ulink = ulink;
-		}
-		void calcForwardKinematics(int rootlink);
-		bool calcInverseKinematics(int to, Link target);
-		vector<int> FindRoute(int to);
-		Matrix<double,3,3> Rodrigues(Matrix<double,3,1> a, double q);
-		Matrix<double,3,1> rot2omega(Matrix<double,3,3> R);
-		Matrix<double,6,1> calcVWerr(Link Cref, Link Cnow);
-		template <typename t_matrix> t_matrix 
-		PseudoInverse(const t_matrix& m, const double &tolerance=1.e-6);
-	};
+		this->ulink = ulink;
+	}
+	void calcForwardKinematics(int rootlink);
+	bool calcInverseKinematics(int to, Link target);
+	vector<int> FindRoute(int to);
+	Matrix<double,3,3> Rodrigues(Matrix<double,3,1> a, double q);
+	Matrix<double,3,1> rot2omega(Matrix<double,3,3> R);
+	Matrix<double,6,1> calcVWerr(Link Cref, Link Cnow);
+	template <typename t_matrix> t_matrix 
+	PseudoInverse(const t_matrix& m, const double &tolerance=1.e-6);
 };
 
 #endif

@@ -7,7 +7,6 @@
 #include "Link.h"
 
 using namespace Eigen;
-using namespace MotionControl;
 
 // 全リンクがあワールド座標系の原点回りに作り出すモーメント
 Matrix<double,3,1> calcMC(Link *ulink, int rootlink)

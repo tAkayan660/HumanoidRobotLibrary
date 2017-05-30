@@ -1,7 +1,5 @@
 #include "Link.h"
 
-using namespace MotionControl;
-
 extern "C" void SetJointInfo(struct Link *link)
 {
 	for(int i=0;i<JOINT_NUM;i++)

@@ -1,8 +1,6 @@
 #include "Kinematics.h"
 #include "Jacobian.h"
 
-using namespace MotionControl;
-
 Matrix<double,3,3> Kinematics::Rodrigues(Matrix<double,3,1> a, double q)
 {
 	return AngleAxisd(q,a).toRotationMatrix();
