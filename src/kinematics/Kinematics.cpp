@@ -1,5 +1,4 @@
 #include "Kinematics.h"
-#include "Jacobian.h"
 
 Matrix<double,3,3> Kinematics::Rodrigues(Matrix<double,3,1> a, double q)
 {

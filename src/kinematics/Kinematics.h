@@ -9,6 +9,7 @@
 #define _KINEMATICS_
 
 #include "Link.h"
+#include "Jacobian.h"
 
 class Kinematics
 {
