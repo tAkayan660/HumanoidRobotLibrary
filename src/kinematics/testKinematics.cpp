@@ -2,7 +2,6 @@
 #include "../util/func.h"
 
 using namespace std;
-using namespace MotionControl;
 
 int main(int argc, char* argv[])
 {

@@ -1,7 +1,4 @@
 #include "Kinematics.h"
-#include <Eigen/SVD>
-
-using namespace MotionControl;
 
 Matrix<double,3,3> Kinematics::Rodrigues(Matrix<double,3,1> a, double q)
 {
@@ -61,44 +58,6 @@ void Kinematics::calcForwardKinematics(int rootlink)
 	calcForwardKinematics(ulink[rootlink].child);
 }
 
-MatrixXd Kinematics::calcJacobian(vector<int> idx)
-{
-	size_t jsize = idx.size();
-	Matrix<double,3,1> target = ulink[idx.back()].p;
-	Matrix<double,6,11> J = MatrixXd::Zero(6,11);
-
-	for(size_t i=0;i<jsize;i++)
-	{
-		int j = idx[i];
-		Matrix<double,3,1> a = ulink[j].R * ulink[j].a;
-		Matrix<double,3,1> b = a.cross(target - ulink[j].p);
-		J(0,i) = b(0); J(1,i) = b(1); J(2,i) = b(2);
-		J(3,i) = a(0); J(4,i) = a(1); J(5,i) = a(2);
-	}
-
-	return J;
-}
-
-template <typename t_matrix>
-t_matrix Kinematics::PseudoInverse(const t_matrix& m, const double &tolerance)
-{
-	typedef JacobiSVD<t_matrix> TSVD;
-	unsigned int svd_opt(ComputeThinU | ComputeThinV);
-	if(m.RowsAtCompileTime!=Dynamic || m.ColsAtCompileTime!=Dynamic)
-		svd_opt= ComputeFullU | ComputeFullV;
-	TSVD svd(m, svd_opt);
-	const typename TSVD::SingularValuesType &sigma(svd.singularValues());
-	typename TSVD::SingularValuesType sigma_inv(sigma.size());
-	for(long i=0; i<sigma.size(); ++i)
-	{
-		if(sigma(i) > tolerance)
-			sigma_inv(i)= 1.0/sigma(i);
-		else
-			sigma_inv(i)= 0.0;
-	}
-	return svd.matrixV()*sigma_inv.asDiagonal()*svd.matrixU().transpose();
-}
-
 bool Kinematics::calcInverseKinematics(int to, Link target)
 {
 	MatrixXd J, dq;
@@ -117,7 +76,7 @@ bool Kinematics::calcInverseKinematics(int to, Link target)
 	J.resize(6,jsize); dq.resize(jsize,1);
 
 	for(int n=0;n<iteration;n++){
-		J = calcJacobian(idx);
+		J = calcJacobian(ulink, idx);
 		err = calcVWerr(target, ulink[to]);
 		if(err.norm() < eps) return true;
 
