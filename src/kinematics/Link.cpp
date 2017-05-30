@@ -14,6 +14,7 @@ extern "C" void SetJointInfo(struct Link *link)
 		{
 			link[i].a(j) = LinkAxis[i][j];
 			link[i].b(j) = LinkPos[i][j];
+			link[i].c(j) = LinkCom[i][j];
 		}
 	}
 }
