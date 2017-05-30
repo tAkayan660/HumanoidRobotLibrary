@@ -43,9 +43,9 @@ struct Link
 					q(0.0), dq(0.0), ddq(0.0),
 					c(Matrix<double,3,1>::Zero()), I(Matrix<double,3,3>::Identity()) 
 	{
+	}
 };
 
-	extern "C" void SetJointInfo(struct Link *link);
-};
+extern "C" void SetJointInfo(struct Link *link);
 
 #endif

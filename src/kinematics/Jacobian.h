@@ -23,6 +23,30 @@ Matrix<double,3,1> calcMC(Link *ulink, int rootlink)
 	return mc;
 }
 
+// ロボットの質量を計算
+double calcTotalMass(Link *ulink, int rootlink)
+{
+	double M = 0;
+
+	if(rootlink == -1){
+		M = 0.0f;
+	}else{
+		M = ulink[rootlink].m + calcTotalMass(ulink, ulink[rootlink].sister) + calcTotalMass(ulink, ulink[rootlink].child);
+	}
+
+	return M;
+}
+
+Matrix<double,3,1> calcCoM(Link *ulink)
+{
+	double M = calcTotalMass(ulink, WAIST);
+	Matrix<double,3,1> MC = calcMC(ulink, WAIST); 
+	
+	Matrix<double,3,1> com = MC / M;
+
+	return com;
+}
+
 MatrixXd calcJacobian(Link *ulink, std::vector<int> idx)
 {
 	std::size_t jsize = idx.size();

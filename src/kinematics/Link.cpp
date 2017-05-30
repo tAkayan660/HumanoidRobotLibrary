@@ -8,6 +8,7 @@ extern "C" void SetJointInfo(struct Link *link)
 		link[i].parent = parent[i];
 		link[i].child = child[i];
 		link[i].sister = sister[i];
+		link[i].m = LinkMass[i];
 		for(int j=0;j<3;j++)
 		{
 			link[i].a(j) = LinkAxis[i][j];
