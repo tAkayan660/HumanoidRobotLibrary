@@ -70,46 +70,27 @@ private:
 
 void print_usage()
 {
-	std::cerr << "Usage: testGaitPatternGenerator [param] [test-name]" << std::endl;
+	std::cerr << "Usage: testGaitPatternGenerator [param] <step> <torso x> <torso y> <torso th>" << std::endl;
 	std::cerr << "[param]:" << std::endl;
 	std::cerr << "	step: max number of foot steps." << std::endl;
-	std::cerr << "[test-name]:" << std::endl;
-	std::cerr << "	--test0 : go pos x forward." << std::endl;
-	std::cerr << "	--test1 : go pos x back." << std::endl;
-	std::cerr << "	--test2 : go pos y left." << std::endl;
-	std::cerr << "	--test3 : go pos y right." << std::endl;
-	std::cerr << "	--test4 : go pos th left." << std::endl;
-	std::cerr << "	--test5 : go pos th right." << std::endl;
-	std::cerr << "	--test6 : go pos x y combination." << std::endl;
-	std::cerr << "	--test7 : go pos x y th combination." << std::endl;   
+	std::cerr << "	torso x: max torso x." << std::endl;
+	std::cerr << "	torso y: max torso y."	<< std::endl;
+	std::cerr << "	torso th:	max torso th." << std::endl;
 }
 
 int main(int argc, char *argv[])
 {
 	testGaitGenerator tgg(0.01, 0.32, 0.27);
 
-	if(2 < argc){
+	cout << argc << endl;
+
+	if(argc == 5){
 		int max_step = atoi(argv[1]);
-		if(string(argv[2]) == "--test0") 
-			tgg.run(max_step, 0.03, 0.0, 0.0);
-		else if(string(argv[2]) == "--test1")
-			tgg.run(max_step, -0.03, 0.0, 0.0);
-		else if(string(argv[2]) == "--test2")
-			tgg.run(max_step, 0.0, 0.03, 0.0);
-		else if(string(argv[2]) == "--test3")
-			tgg.run(max_step, 0.0, -0.03, 0.0);
-		else if(string(argv[2]) == "--test4")
-			tgg.run(max_step, 0.0, 0.0, 5.0);
-		else if(string(argv[2]) == "--test5")
-			tgg.run(max_step, 0.0, 0.0, -5.0);
-		else if(string(argv[2]) == "--test6")
-			tgg.run(max_step, 0.03, 0.03, 0.0);
-		else if(string(argv[2]) == "--test7")
-			tgg.run(max_step, 0.03, 0.03, 5.0);
-		else{
-			print_usage();
-			return -1;
-		}
+		double torso_x	= static_cast<double>(atof(argv[2]));
+		double torso_y	= static_cast<double>(atof(argv[3]));
+		double torso_th	= static_cast<double>(atof(argv[4]));
+
+		tgg.run(max_step, torso_x, torso_y, torso_th);
 	}else{
 		print_usage();
 		return -1;
