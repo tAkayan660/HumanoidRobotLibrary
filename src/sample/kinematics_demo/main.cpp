@@ -182,6 +182,7 @@ static void display(void)
 	// 関節
   glTranslated(0.0, 0.0, -1.0);
   glRotated(angle[2], 0.0, 1.0, 0.0);
+	glRotated(angle[3], 0.0, 0.0, 1.0);
   myCylinder(0.3, 0.4, 16);
 
 	// 3番目の腕
@@ -189,16 +190,16 @@ static void display(void)
   myBox(0.2, 0.2, 1.2);
 	// 関節
   glTranslated(0.0, 0.0, -1.0);
-  glRotated(angle[3], 0.0, 1.0, 0.0);
+  glRotated(angle[4], 0.0, 1.0, 0.0);
   myCylinder(0.3, 0.4, 16);
 
 	// 4番目の腕
-  glTranslated(0.0, 0.0, -1.0);
-  myBox(0.2, 0.2, 1.2);
+  //glTranslated(0.0, 0.0, -1.0);
+  //myBox(0.2, 0.2, 1.2);
 	// 関節
-  glTranslated(0.0, 0.0, -1.0);
-  glRotated(angle[4], 0.0, 1.0, 0.0);
-  myCylinder(0.3, 0.4, 16);
+  //glTranslated(0.0, 0.0, -1.0);
+  //glRotated(angle[4], 0.0, 1.0, 0.0);
+  //myCylinder(0.3, 0.4, 16);
 
 	// 5番目の腕
   glTranslated(0.0, 0.0, -0.4);
@@ -206,7 +207,7 @@ static void display(void)
 
 	// ハンド
   glTranslated(0.0, 0.0, -0.9);
-	glRotated(45, 0.0, 0.0, 1.0);
+	glRotated(angle[5], 0.0, 0.0, 1.0);
   glMaterialfv(GL_FRONT, GL_DIFFUSE, blue);
   glutSolidCube(0.7);
 
