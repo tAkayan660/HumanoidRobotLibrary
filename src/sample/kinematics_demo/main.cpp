@@ -1,13 +1,18 @@
 #include "Kinematics.h"
 #include "Link.h"
+#include "../../util/func.h"
 
 #include <stdlib.h>
 #include <math.h>
 #include <GL/glut.h>
 
-static double step = 1.f;
+Link ulink[JOINT_NUM], ARM_Link;
+Kinematics *ik_node;
 
-static GLdouble angle[6];
+static double step = 0.001;
+
+static double angle[6];
+static double initial_angle[6] = {0.0,-30.0,60.0,0.0,-30.0,0.0};
 
 static GLdouble centerX = 0.0f;
 static GLdouble centerY = 0.0f;
@@ -152,7 +157,7 @@ static void display(void)
   glLightfv(GL_LIGHT0, GL_POSITION, lightpos);
 
   /* 視点の移動（シーンの方を奥に移す）*/
-  glTranslated(0.0, 0.0, -10.0);
+  glTranslated(0.0, 0.0, -5.0);
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
@@ -166,7 +171,7 @@ static void display(void)
 	// 土台
   glTranslated(0.0, -1.8, 0.0);
 	glRotated(angle[0], 0.0, 1.0, 0.0);
-  myCylinder(0.8, 0.2, 16);                 /* 土台　　　 */
+  myCylinder(0.8, 0.2, 10);                 /* 土台　　　 */
 
 	// 一番目の腕
   glTranslated(0.0, 1.0, 0.0);
@@ -182,7 +187,6 @@ static void display(void)
 	// 関節
   glTranslated(0.0, 0.0, -1.0);
   glRotated(angle[2], 0.0, 1.0, 0.0);
-	//glRotated(angle[3], 0.0, 0.0, 1.0);
   myCylinder(0.3, 0.4, 16);
 	glRotated(angle[3], 0.0, 0.0, 1.0);
 
@@ -195,14 +199,6 @@ static void display(void)
   myCylinder(0.3, 0.4, 16);
 
 	// 4番目の腕
-  //glTranslated(0.0, 0.0, -1.0);
-  //myBox(0.2, 0.2, 1.2);
-	// 関節
-  //glTranslated(0.0, 0.0, -1.0);
-  //glRotated(angle[4], 0.0, 1.0, 0.0);
-  //myCylinder(0.3, 0.4, 16);
-
-	// 5番目の腕
   glTranslated(0.0, 0.0, -0.4);
   myBox(0.2, 0.2, 0.6);
 
@@ -236,23 +232,23 @@ static void keyboard(unsigned char key, int x, int y)
   /* ESC か q をタイプしたら終了 */
   if (key == '\033' || key == 'q') {
     exit(0);
-  }else if(key == 'f'){
-		angle[0] += step;
+  }else if(key == 'f'){	// x
+		ARM_Link.p(0) += step;	
 	}else if(key == 'j'){
-		angle[0] -= step;
-	}else if(key == 'd'){
-		angle[1] += step;
+		ARM_Link.p(0) -= step; 
+	}else if(key == 'd'){	// y
+		ARM_Link.p(1) += step;
 	}else if(key == 'k'){
-		angle[1] -= step;
-	}else if(key == 's'){
-		angle[2] += step;
+		ARM_Link.p(1) -= step;
+	}else if(key == 's'){	// z
+		ARM_Link.p(2) += step;
 	}else if(key == 'l'){
-		angle[2] -= step;
-	}else if(key == 'r'){
-		angle[3] += step;
-	}else if(key == 'u'){
-		angle[3] -= step;
+		ARM_Link.p(2) -= step;
 	}
+
+	ik_node->calcInverseKinematics(ARM5, ARM_Link);
+	for(int i=0;i<6;i++)
+		angle[i] = rad2deg(ulink[i+1].q);
 }
 
 void idle(void)
@@ -270,14 +266,28 @@ static void init(void)
   glEnable(GL_LIGHT0);
 }
 
+void print_usage()
+{
+	printf("------------\n");
+	printf("x: 'f' or 'j'\n");
+	printf("y: 'd' or 'k'\n");
+	printf("z: 's' or 'l'\n");
+	printf("------------\n");
+}
+
 int main(int argc, char *argv[])
 {
-	Link ulink[JOINT_NUM];
-	Kinematics ik_node(ulink);
+	print_usage();
+
+	ik_node = new Kinematics(ulink);
 	SetJointInfo(ulink);
 
-	for(int i=0;i<6;i++)
-		angle[i] = 0.0f;
+	for(int i=0;i<6;i++){
+		ulink[i+1].q = deg2rad(initial_angle[i]);
+		angle[i] = initial_angle[i];
+	}
+	ik_node->calcForwardKinematics(BASE);
+	ARM_Link = ulink[ARM5];
 
   glutInit(&argc, argv);
   glutInitDisplayMode(GLUT_RGBA | GLUT_DEPTH);
