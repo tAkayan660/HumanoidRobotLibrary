@@ -182,8 +182,9 @@ static void display(void)
 	// 関節
   glTranslated(0.0, 0.0, -1.0);
   glRotated(angle[2], 0.0, 1.0, 0.0);
-	glRotated(angle[3], 0.0, 0.0, 1.0);
+	//glRotated(angle[3], 0.0, 0.0, 1.0);
   myCylinder(0.3, 0.4, 16);
+	glRotated(angle[3], 0.0, 0.0, 1.0);
 
 	// 3番目の腕
   glTranslated(0.0, 0.0, -1.0);
