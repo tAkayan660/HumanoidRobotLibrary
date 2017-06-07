@@ -103,7 +103,7 @@ bool Kinematics::calcInverseKinematics(int to, Link target)
 	const double lambda = 0.5;
 	const int iteration = 100;
 	
-	calcForwardKinematics(BASE);
+	calcForwardKinematics(WAIST);
 	
 	vector<int> idx = FindRoute(to);
 	const int jsize = idx.size();
@@ -122,7 +122,7 @@ bool Kinematics::calcInverseKinematics(int to, Link target)
 			int j = idx[nn];
 			ulink[j].q += dq(nn);
 		}
-		calcForwardKinematics(BASE);
+		calcForwardKinematics(WAIST);
 	}
 	return false;
 }
