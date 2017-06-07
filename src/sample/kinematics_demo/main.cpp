@@ -9,7 +9,12 @@
 Link ulink[JOINT_NUM], ARM_Link;
 Kinematics *ik_node;
 
-static double step = 0.001;
+static double pos_step = 0.001;
+static double rot_step = 0.5;
+
+static double roll = 0.0f;
+static double pitch = 0.0f;
+static double yaw = 0.0f;
 
 static double angle[6];
 static double initial_angle[6] = {0.0,-30.0,60.0,0.0,-30.0,0.0};
@@ -233,18 +238,31 @@ static void keyboard(unsigned char key, int x, int y)
   if (key == '\033' || key == 'q') {
     exit(0);
   }else if(key == 'f'){	// x
-		ARM_Link.p(0) += step;	
+		ARM_Link.p(0) += pos_step;	
 	}else if(key == 'j'){
-		ARM_Link.p(0) -= step; 
+		ARM_Link.p(0) -= pos_step; 
 	}else if(key == 'd'){	// y
-		ARM_Link.p(1) += step;
+		ARM_Link.p(1) += pos_step;
 	}else if(key == 'k'){
-		ARM_Link.p(1) -= step;
+		ARM_Link.p(1) -= pos_step;
 	}else if(key == 's'){	// z
-		ARM_Link.p(2) += step;
+		ARM_Link.p(2) += pos_step;
 	}else if(key == 'l'){
-		ARM_Link.p(2) -= step;
+		ARM_Link.p(2) -= pos_step;
+	}else if(key == 'r'){	// roll
+		roll += rot_step;
+	}else if(key == 'u'){
+		roll -= rot_step;
+	}else if(key == 'e'){	// pitch
+		pitch += rot_step;
+	}else if(key == 'i'){
+		pitch -= rot_step;
+	}else if(key == 'w'){	// yaw
+		yaw += rot_step;
+	}else if(key == 'o'){
+		yaw -= rot_step;
 	}
+	ARM_Link.R = ik_node->computeMatrixFromAngles(deg2rad(roll), deg2rad(pitch), deg2rad(yaw));
 
 	ik_node->calcInverseKinematics(ARM5, ARM_Link);
 	for(int i=0;i<6;i++)
@@ -272,6 +290,11 @@ void print_usage()
 	printf("x: 'f' or 'j'\n");
 	printf("y: 'd' or 'k'\n");
 	printf("z: 's' or 'l'\n");
+	printf("------------\n");
+	printf("------------\n");
+	printf("roll	: 'r' or 'u'\n");
+	printf("pitch	: 'e' or 'i'\n");
+	printf("yaw	: 'w' or 'o'\n");
 	printf("------------\n");
 }
 
