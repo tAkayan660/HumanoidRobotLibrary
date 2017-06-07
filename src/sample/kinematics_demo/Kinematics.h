@@ -22,6 +22,8 @@ public:
 	}
 	void calcForwardKinematics(int rootlink);
 	bool calcInverseKinematics(int to, Link target);
+	Matrix<double,3,3> computeMatrixFromAngles(double r, double p, double y);
+	void computeAnglesFromMatrix(Matrix<double,3,3> R, double &r, double &p, double &y);
 	vector<int> FindRoute(int to);
 	Matrix<double,3,3> Rodrigues(Matrix<double,3,1> a, double q);
 	Matrix<double,3,1> rot2omega(Matrix<double,3,3> R);

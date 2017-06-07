@@ -1,5 +1,40 @@
 #include "Kinematics.h"
 
+Matrix<double,3,3> Kinematics::computeMatrixFromAngles(double r, double p, double y)
+{
+	Matrix<double,3,3> R;
+
+	R(0,0) = cos(p) * cos(y) - sin(r) * sin(p) * sin(y);
+	R(0,1) = -cos(r) * sin(y);
+	R(0,2) = sin(r) * cos(y) + sin(r) * cos(p) * sin(y);
+	R(1,0) = cos(p) * sin(y) + sin(r) * sin(p) * cos(y);
+	R(1,1) = cos(r) * cos(y);
+	R(1,2) = sin(p) * sin(y) - sin(r) * cos(p) * cos(y);
+	R(2,0) = -cos(r) * sin(p);
+	R(2,1) = sin(r);
+	R(2,2) = cos(r) * cos(p);	
+
+	return R;
+}
+
+void Kinematics::computeAnglesFromMatrix(Matrix<double,3,3> R, double &r, double &p, double &y)
+{
+	double threshold = 0.001;
+  if(abs(R(2,1) - 1.0) < threshold){ // R(2,1) = sin(x) = 1の時
+    r = pi / 2;
+    p = 0;
+    y = atan2(R(1,0), R(0,0));
+  }else if(abs(R(2,1) + 1.0) < threshold){ // R(2,1) = sin(x) = -1の時
+    r = - pi / 2;
+    p = 0;
+    y = atan2(R(1,0), R(0,0));
+  }else{
+    r = asin(R(2,1));
+    p = atan2(-R(2,0), R(2,2));
+    y = atan2(-R(0,1), R(1,1));
+  }
+}
+
 Matrix<double,3,3> Kinematics::Rodrigues(Matrix<double,3,1> a, double q)
 {
 	return AngleAxisd(q,a).toRotationMatrix();
@@ -68,7 +103,7 @@ bool Kinematics::calcInverseKinematics(int to, Link target)
 	const double lambda = 0.5;
 	const int iteration = 100;
 	
-	calcForwardKinematics(WAIST);
+	calcForwardKinematics(BASE);
 	
 	vector<int> idx = FindRoute(to);
 	const int jsize = idx.size();
@@ -87,7 +122,7 @@ bool Kinematics::calcInverseKinematics(int to, Link target)
 			int j = idx[nn];
 			ulink[j].q += dq(nn);
 		}
-		calcForwardKinematics(WAIST);
+		calcForwardKinematics(BASE);
 	}
 	return false;
 }
