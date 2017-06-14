@@ -30,16 +30,17 @@ class preview_control
 	private:
 		Matrix<double,3,3> P;
 		Matrix<double,1,3> K;
-	public:
+	private:
 		void calc_f();
 		void calc_u();
+		void calc_xk(Vector2d &com_pos, Vector2d &com_vel, Vector2d &com_acc);
 		bool update_xk(Vector2d &com_pos, Vector2d &com_vel, Vector2d &com_acc);
 	public:
 		vector<Vector2d> refzmp;
 	public:
 		preview_control(const double _dt, const double _preview_delay, const double _zc, const double _Q=1e+08, const double _R=1.0)
 			: dt(_dt), preview_delay(_preview_delay), zc(_zc), Q(_Q), R(_R), preview_num(0), stop_time(1.0),
-			  xk(Matrix<double,3,2>::Zero())
+			  xk(Matrix<double,3,2>::Zero()), xkp(Matrix<double,3,2>::Zero())
 		{
 			A << 1, dt, (dt*dt)/2,
 				 0, 1, dt,
@@ -60,6 +61,7 @@ class preview_control
 			const int MAX_ITERATION = 10000;
 
 			for(int i=0;i<MAX_ITERATION;i++){
+				cout << i << endl;
 				K = (1.0/(R+b.transpose()*P*b))*b.transpose()*P*A;
 				P_pre = A.transpose()*P*A+c.transpose()*Q*c-A.transpose()*P*b*K;
 				if((abs((P-P_pre).array()) < 1e-10).all()){
@@ -73,7 +75,7 @@ class preview_control
 			std::cerr << "faild." << std::endl;
 			return false;
 		}
-		void calc_xk(Vector2d &com_pos, Vector2d &com_vel, Vector2d &com_acc);
+		//void calc_xk(Vector2d &com_pos, Vector2d &com_vel, Vector2d &com_acc);
 		void interpolation_zmp_trajectory(vector<Vector3d> foot_step_list);
 		void set_com_param(Vector2f &com_pos, Vector2f &com_vel, Vector2f &com_acc);
 		void get_ref_zmp(Matrix<double,2,1> &refzmp){refzmp = this->temp_refzmp;}
@@ -91,14 +93,16 @@ class extend_preview_control : public preview_control
 		Matrix<double,1,4> _K;
 		Matrix<double,1,3> _Kx;
 		double _Ks;
+		double gj;
 	public:
 		void calc_f();
 		void calc_u();
+		void calc_xk(Vector2d &com_pos, Vector2d &com_vel, Vector2d &com_acc);
 		bool update_xk(Vector2d &com_pos, Vector2d &com_vel, Vector2d &com_acc);
 	public:
 		extend_preview_control(const double _dt, const double _preview_delay, const double _zc)
 			: _A(Matrix<double,4,4>::Zero()), _b(Matrix<double,4,1>::Zero()), _c(Matrix<double,1,4>::Zero()),
-				_xk(Matrix<double,4,2>::Zero()), preview_control(_dt,_preview_delay, _zc)
+				_xk(Matrix<double,4,2>::Zero()), preview_control(_dt,_preview_delay, _zc), gj(0)
 		{
 			Matrix<double,1,3> cA;
 
@@ -110,6 +114,9 @@ class extend_preview_control : public preview_control
 			_c << 1, 0, 0, 0;
 
 			calc_riccati_equation<4>(_A, _b, _c, _P, _K);
+
+			cout << _P << endl;
+			cout << _K << endl;
 
 			_Ks = _K(0);
 			_Kx << _K(1), _K(2), _K(3);

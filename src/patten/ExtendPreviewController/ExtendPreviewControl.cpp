@@ -67,12 +67,40 @@ void extend_preview_control::calc_f()
 		fi.push_back((1.0/(R+_b.transpose()*_P*_b))*_b.transpose()*AbK.pow(preview_step-1)*Q*_c.transpose());
 }
 
+#if 0
 void extend_preview_control::calc_u()
 {
 	Matrix<double,1,2> du;
-	for(int preview_step=1;preview_step<=(preview_delay/dt); preview_step++)
-		du += (-_Ks*(refzmp[preview_step+preview_num]-p.transpose())+fi[preview_step-1]*(refzmp[preview_step+preview_num]));
+	double gj=0;
+	for(int preview_step=1;preview_step<=(preview_delay/dt); preview_step++){
+		for(int i=preview_step;i<=preview_step+(preview_delay/dt);i++)
+			gj += fi[i];
+		du += gj*refzmp[preview_step+preview_num];
+		for(int j=0;j<preview_num;j++)
+			du += -_Ks*(refzmp[preview_step]-p.transpose());
+	}
 	u =  -_Kx * xk + du;
+}
+#endif
+
+void extend_preview_control::calc_u()
+{
+	Matrix<double,1,2> du;
+	for(int preview_step=1;preview_step<=(preview_delay/dt);preview_step++){
+		//for(int i=preview_step;i<preview_step+(preview_delay/dt);i++)
+			//gj += fi[i];
+		du += fi[preview_step-1]*(refzmp[preview_step+preview_num]-refzmp[preview_step+preview_num]);
+	}
+	u += -_K*_xk + du;
+}
+
+void extend_preview_control::calc_xk(Vector2d &com_pos, Vector2d &com_vel, Vector2d &com_acc)
+{
+	_xk = _A*_xk + _b*u;
+
+	com_pos << _xk(1,0), _xk(1,1);
+	com_vel << _xk(2,0), _xk(2,1);
+	com_acc << _xk(3,0), _xk(3,1);
 }
 
 bool extend_preview_control::update_xk(Vector2d &com_pos, Vector2d &com_vel, Vector2d &com_acc)
@@ -83,7 +111,7 @@ bool extend_preview_control::update_xk(Vector2d &com_pos, Vector2d &com_vel, Vec
 		return false;
 	}
 
-	p = c * xk; temp_refzmp = refzmp[preview_num];
+	p = _c * _xk; temp_refzmp = refzmp[preview_num];
 	
 	Matrix<double,2,1> err(refzmp[preview_num] - p.transpose());
 	Matrix<double,3,2> d_xk(xk-xkp);
