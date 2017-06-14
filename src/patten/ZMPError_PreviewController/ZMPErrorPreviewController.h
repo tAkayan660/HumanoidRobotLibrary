@@ -22,30 +22,21 @@ class ZMPErrorPreviewControl
 		Matrix<double,3,3> A;
 		Matrix<double,3,1> b;
 		Matrix<double,1,3> c;
-		Matrix<double,3,2> xk;	//計算される重心(位置，速度，加速度)
-		Matrix<double,3,2> xkp;	//t-1における重心
-		Matrix<double,1,2> u;	//制御入力
-		Matrix<double,1,2> p;	//出力ZMP
-		Matrix<double,1,2> e;	//ZMP誤差
-		vector<double> fi;		//フィードバックゲイン
-
-		int gait_count;
-		int stop_time;
-
-		const double preview_delay;	//予見制御幅
-		const double dt;				//サンプリングタイム
-			
+		Matrix<double,3,2> xk, xkp;
+		Matrix<double,1,2> u;
+		Matrix<double,1,2> p, e;
+		vector<double> fi;
+		int gait_count, stop_time;
+		const double dt, preview_delay;
 		const double Q,R;
-
 	private:
-		Matrix<double,4,4> phi;
-		Matrix<double,4,1> G;
-		Matrix<double,4,1> GR;
+		Matrix<double,4,4> _A;
+		Matrix<double,4,1> _b;
+		Matrix<double,1,4> _c;
 		Matrix<double,4,2> xk_ex;
 		Matrix<double,4,4> xi0;
 		Matrix<double,4,4> P;
 		Matrix<double,1,4> K;
-
 		Matrix<double,2,1> temp_refzmp;
 	public:
 		vector<Vector2d> refzmp;
@@ -71,24 +62,22 @@ class ZMPErrorPreviewControl
 			Matrix<double,1,1> cb(c*b);
 			Matrix<double,4,4> I(Matrix<double,4,4>::Identity());
 
-			phi << 1, -cA(0), -cA(1), -cA(2),
+			_A << 1, -cA(0), -cA(1), -cA(2),
 					   0, A(0,0), A(0,1), A(0,2),
 					   0, A(1,0), A(1,1), A(1,2),
 					   0, A(2,0), A(2,1), A(2,2);
-			G << -cb, b(0), b(1), b(2);
-			GR <<1, 0, 0, 0;
+			_b << -cb, b(0), b(1), b(2);
+			_c <<1, 0, 0, 0;
 			P << 3.4360e+09, -5.7313e+10, -9.7980e+09, -4.8302e+07,
 					-5.7313e+10, 9.8950e+11, 1.6919e+11, 8.3865e+08,
 					-9.7980e+09, 1.6919e+11, 2.8929e+10, 1.4345e+08,
 					-4.8302e+07, 8.3865e+08, 1.4345e+08, 7.2054e+05;
 			K << 2.6772e+03, -9.1990e+04, -1.6264e+04, -172.6188;
 
-			xi0 = (I-G*(1.0/(R+G.transpose()*P*G))*G.transpose()*P)*phi; 
+			xi0 = (I-_b*(1.0/(R+_b.transpose()*P*_b))*_b.transpose()*P)*_A; 
 
-			/* 予見制御ゲイン計算 */
 			calc_f();
 		}
-		/* ロボットの初期重心位置・速度をセット */
 		void SetCoMParam(double *com_pos, double *com_vel, double *com_acc)
 		{
 			xk(0,0) = com_pos[0]; xk(0,1) = com_pos[1];
@@ -97,17 +86,11 @@ class ZMPErrorPreviewControl
 
 			xkp = xk;
 		}
-		/* 目標ZMPの補間 */
 		void interpolation_zmp_trajectory(vector<Vector3d> foot_step_list);
-		/* 目標ZMPの取得 */
 		void get_ref_zmp(Matrix<double,2,1> &refzmp){ refzmp = this->temp_refzmp; }
-		/* 出力ZMPの取得 */
 		void get_current_zmp(Matrix<double,1,2> &current_zmp){ current_zmp = this->p; }
-		/* 予見制御ゲインの計算 */
 		void calc_f();
-		/* 制御入力の計算 */
 		void calc_u();
-		/* 重心軌道の計算 */
 		bool calc_xk(Vector2d &com_pos, Vector2d &com_vel, Vector2d &com_acc);
 };
 
