@@ -21,7 +21,7 @@ class preview_control
 		Matrix<double,3,1> b;
 		Matrix<double,1,3> c;
 		Matrix<double,3,2> xk, xkp;
-		Matrix<double,1,2> u, p;
+		Matrix<double,1,2> u, up, p;
 		Matrix<double,2,1> temp_refzmp;
 		vector<double> fi;
 		const double dt, preview_delay, zc, stop_time;
@@ -40,7 +40,7 @@ class preview_control
 	public:
 		preview_control(const double _dt, const double _preview_delay, const double _zc, const double _Q=1e+08, const double _R=1.0)
 			: dt(_dt), preview_delay(_preview_delay), zc(_zc), Q(_Q), R(_R), preview_num(0), stop_time(1.0),
-			  xk(Matrix<double,3,2>::Zero()), xkp(Matrix<double,3,2>::Zero())
+			  xk(Matrix<double,3,2>::Zero()), xkp(Matrix<double,3,2>::Zero()), up(Matrix<double,1,2>::Zero())
 		{
 			A << 1, dt, (dt*dt)/2,
 				 0, 1, dt,
@@ -113,10 +113,13 @@ class extend_preview_control : public preview_control
 			_b << c*b, b(0), b(1), b(2);
 			_c << 1, 0, 0, 0;
 
-			calc_riccati_equation<4>(_A, _b, _c, _P, _K);
+		//	calc_riccati_equation<4>(_A, _b, _c, _P, _K);
 
-			cout << _P << endl;
-			cout << _K << endl;
+			_P <<3437692525.62383,	57369803240.9293,	9812475637.03733,	48373761.7798753,
+			57369803240.9293,	990949874277.957,	169519465566.811,	840278939.200152,
+			9812475637.03733,	169519465566.811,	28999617839.3531,	143799650.968417,
+			48373761.7798753,	840278939.200152,	143799650.968417,	722258.932258196;
+			_K << -2675.46982037481,	-91974.4260406319,	-16268.8619776505,	-172.653264027794;
 
 			_Ks = _K(0);
 			_Kx << _K(1), _K(2), _K(3);

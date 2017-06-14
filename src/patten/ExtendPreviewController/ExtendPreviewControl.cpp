@@ -82,21 +82,27 @@ void extend_preview_control::calc_u()
 	u =  -_Kx * xk + du;
 }
 #endif
-
+#if 1
 void extend_preview_control::calc_u()
 {
 	Matrix<double,1,2> du;
 	for(int preview_step=1;preview_step<=(preview_delay/dt);preview_step++){
 		//for(int i=preview_step;i<preview_step+(preview_delay/dt);i++)
 			//gj += fi[i];
-		du += fi[preview_step-1]*(refzmp[preview_step+preview_num]-refzmp[preview_step+preview_num]);
+		du += fi[preview_step-1]*(refzmp[preview_step+preview_num]-refzmp[preview_step+preview_num-1]);
+	//	du += fi[preview_step-1]*(refzmp[preview_step+preview_num]);
 	}
-	u += -_K*_xk + du;
+	u = -_K*_xk + du;
 }
-
+#endif
 void extend_preview_control::calc_xk(Vector2d &com_pos, Vector2d &com_vel, Vector2d &com_acc)
 {
 	_xk = _A*_xk + _b*u;
+	up = u;
+
+	xk(0,0) = _xk(1,0); xk(0,1) = _xk(1,1);
+	xk(1,0) = _xk(2,0); xk(1,1) = _xk(2,1);
+	xk(2,0) = _xk(3,0); xk(2,1) = _xk(3,1);
 
 	com_pos << _xk(1,0), _xk(1,1);
 	com_vel << _xk(2,0), _xk(2,1);
@@ -116,7 +122,7 @@ bool extend_preview_control::update_xk(Vector2d &com_pos, Vector2d &com_vel, Vec
 	Matrix<double,2,1> err(refzmp[preview_num] - p.transpose());
 	Matrix<double,3,2> d_xk(xk-xkp);
 
-	_xk << err(0), err(1),
+	_xk << p(0,0), p(0,1),//err(0), err(1),
 				 d_xk(0,0), d_xk(0,1),
 				 d_xk(1,0), d_xk(1,1),
 				 d_xk(2,0), d_xk(2,1);
