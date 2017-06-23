@@ -6,7 +6,7 @@ double deg2rad(double degree)
 }
 
 ZMPPlanner::ZMPPlanner(double _foot_period, double _dist_offset)
-	: foot_period(_foot_period), foot_time(0.32), preview_delay(2.0),
+	: foot_period(_foot_period), foot_time(0.16), preview_delay(2.0),
 		dist_offset(_dist_offset), support_leg(RLEG), status(START),
 		dP_K(Vector2d::Zero())
 {
@@ -42,7 +42,7 @@ void ZMPPlanner::getNextZMP(Vector2d tP_B, double tth_B)
 
 	refzmp_list.push_back(Vector3d(foot_time, dP_K[0], dP_K[1]));
 
-	if(status == START || status == STOP){
+	if(status == STOP){
 		foot_time += foot_period / 2.0f;
 	}else{
 		foot_time += foot_period;

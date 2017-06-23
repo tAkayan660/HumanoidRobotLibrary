@@ -67,6 +67,11 @@ class preview_control
 			}
 			return false;
 		}
+		void buffer_clear()
+		{
+			refzmp.clear();
+			preview_num = 0;
+		}
 		void interpolation_zmp_trajectory(vector<Vector3d> foot_step_list);
 		void set_com_param(Vector2f &com_pos, Vector2f &com_vel, Vector2f &com_acc);
 		void get_ref_zmp(Matrix<double,2,1> &refzmp){refzmp = this->temp_refzmp;}

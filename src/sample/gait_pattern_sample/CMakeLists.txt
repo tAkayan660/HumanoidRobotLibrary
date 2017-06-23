@@ -16,7 +16,7 @@ include_directories(
 
 add_executable(testGaitPatternGenerator 
 	GaitPatternGenerator.cpp
-	../../planning/FootStepPlanner/FootStepPlanner.cpp
+	../../planning/PlanZMPList/ZMPPlanner.cpp
 	../../patten/PreviewController/PreviewControl.cpp)
 
 target_link_libraries(testGaitPatternGenerator ${Boost_LIBRARIES})
