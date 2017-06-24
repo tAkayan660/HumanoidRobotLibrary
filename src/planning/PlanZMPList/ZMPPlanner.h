@@ -21,12 +21,7 @@ public:
 	Vector2d CoordinatesTransform(Vector2d vec, double th);
 	leg_type getSupportLeg(){return this->support_leg;}
 	walk_state getWalkState(){return this->status;}
-	void clear_buf()
-	{
-		refzmp_list.clear();
-		foot_time = foot_period/2.0f;
-		status = START;
-	}
+	void buffer_clear();
 	void plot_foot_pattern();
 
 	std::vector<Vector3d> refzmp_list;	// 目標ZMPリスト

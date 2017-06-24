@@ -69,6 +69,13 @@ void ZMPPlanner::shiftFootVec()
 	}
 }
 
+void ZMPPlanner::buffer_clear()
+{
+	refzmp_list.clear();
+	foot_time = foot_period/2.0f;
+	status = START;
+}
+
 // フットプリントをプロット
 void ZMPPlanner::plot_foot_pattern()
 {

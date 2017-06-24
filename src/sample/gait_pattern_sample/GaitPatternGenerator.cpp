@@ -22,33 +22,30 @@ public:
 	void run(int max_step, const double torso_x, const double torso_y, const double torso_th)
 	{
 		Vector2d tP_B(Vector2d::Zero());
-		double tth_B=0.0f;
-		int count = 1;
-		bool result = true;
-
 		Vector2d prev_refzmp(Vector2d(0.0f,0.0f));
-		Vector2d next_refzmp = prev_refzmp;
+		Vector2d next_torso_pos = prev_refzmp;
+		Vector2d com_pos, com_vel, com_acc;
+
+		double tth_B=0.0f;
+		double preview_timer=0.0f;
+		int total_step=1;
+		
+		// Main Loop
 		while(1){
 			// Generate Reference ZMP
+			int zmp_gen=0;
 			plan_node->refzmp_list.push_back(Vector3d(0.0f,prev_refzmp[0], prev_refzmp[1]));
-			tP_B = next_refzmp;
-			int temp_count = 0;
+			tP_B = next_torso_pos;
 			while(1){
-				plan_node->getNextZMP(tP_B, tth_B); //temp_count++;
+				plan_node->getNextZMP(tP_B, tth_B);
 				if(plan_node->getWalkState() == STOP) break;
-				temp_count++;
+				zmp_gent++;
 				if(ONE_STEP_THRE <= temp_count) plan_node->setStopFlag();
 				tP_B += Vector2d(torso_x, torso_y); tth_B += torso_th;
 			}
 
-			for(size_t i=0;i<plan_node->refzmp_list.size();i++)
-				cout << plan_node->refzmp_list[i](0) << " " << plan_node->refzmp_list[i](1) << " " << plan_node->refzmp_list[i](2) << endl;
-			cout << endl;
-
 			// Preview Controller
 			preview_node->interpolation_zmp_trajectory(plan_node->refzmp_list);
-			double timer = 0;
-			Vector2d com_pos, com_vel, com_acc;
 			while(preview_node->update(com_pos, com_vel, com_acc)){
 				Vector2d temp_refzmp; RowVector2d temp_outputzmp;
 				preview_node->get_ref_zmp(temp_refzmp);
@@ -58,21 +55,24 @@ public:
 				refzmp.push_back(temp_refzmp);
 				outputzmp.push_back(temp_outputzmp.transpose());
 
-				timer += 0.01;
+				preview_timer += dt;
 				if(count < max_step){
-					if(gait_period <= timer) break;
+					if(gait_period <= preview_timer){
+						preview_timer = 0.0f;
+						break;
+					}
 				}
 			}
 
 			prev_refzmp[0] = plan_node->refzmp_list[1][1] + (torso_x/2.0f);
-			prev_refzmp[1] = ((plan_node->refzmp_list[2][2]-plan_node->refzmp_list[1][2])/2.0) + plan_node->refzmp_list[1][2]; //plan_node->refzmp_list[1][2] + (torso_y/2.0f);
-			next_refzmp[0] = torso_x * count;
-			next_refzmp[1] = torso_y * count;
-			plan_node->clear_buf();
+			prev_refzmp[1] = ((plan_node->refzmp_list[2][2]-plan_node->refzmp_list[1][2])/2.0)+plan_node->refzmp_list[1][2];
+			next_torso_pos[0] = torso_x * count;
+			next_torso_pos[1] = torso_y * count;
+			plan_node->buffer_clear();
 			preview_node->buffer_clear();
 
-			count++;
-			if(max_step < count) break;
+			total_step++;
+			if(max_step < total_step) break;
 		}
 	}
 	void plot_gait_pattern()
