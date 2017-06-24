@@ -17,7 +17,7 @@ public:
 		: dt(dt), gait_period(gait_period)
 	{
 		preview_node = new preview_control(dt, 1.6, zc);
-		plan_node = new ZMPPlanner(gait_period, 0.04f);
+		plan_node = new ZMPPlanner(gait_period, 0.05f);
 	}
 	void run(int max_step, const double torso_x, const double torso_y, const double torso_th)
 	{
@@ -41,6 +41,10 @@ public:
 				tP_B += Vector2d(torso_x, torso_y); tth_B += torso_th;
 			}
 
+			for(size_t i=0;i<plan_node->refzmp_list.size();i++)
+				cout << plan_node->refzmp_list[i](0) << " " << plan_node->refzmp_list[i](1) << " " << plan_node->refzmp_list[i](2) << endl;
+			cout << endl;
+
 			// Preview Controller
 			preview_node->interpolation_zmp_trajectory(plan_node->refzmp_list);
 			double timer = 0;
@@ -61,9 +65,9 @@ public:
 			}
 
 			prev_refzmp[0] = plan_node->refzmp_list[1][1] + (torso_x/2.0f);
-			prev_refzmp[1] = 0.0;//plan_node->refzmp_list[1][1] + (torso_y/2.0f);
-			next_refzmp[0] = plan_node->refzmp_list[2][1];
-			next_refzmp[1] = 0.0;
+			prev_refzmp[1] = ((plan_node->refzmp_list[2][2]-plan_node->refzmp_list[1][2])/2.0) + plan_node->refzmp_list[1][2]; //plan_node->refzmp_list[1][2] + (torso_y/2.0f);
+			next_refzmp[0] = torso_x * count;
+			next_refzmp[1] = torso_y * count;
 			plan_node->clear_buf();
 			preview_node->buffer_clear();
 

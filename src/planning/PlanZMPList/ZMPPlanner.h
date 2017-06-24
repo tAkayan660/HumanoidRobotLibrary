@@ -24,7 +24,7 @@ public:
 	void clear_buf()
 	{
 		refzmp_list.clear();
-		foot_time = 0.16;
+		foot_time = foot_period/2.0f;
 		status = START;
 	}
 	void plot_foot_pattern();
