@@ -26,7 +26,7 @@ public:
 		Vector2d next_torso_pos = prev_refzmp;
 		Vector2d com_pos, com_vel, com_acc;
 
-		double tth_B=0.0f;
+		double tth_B=0.0;
 		double preview_timer=0.0f;
 		int total_step=1;
 		
@@ -35,12 +35,12 @@ public:
 			// Generate Reference ZMP
 			int zmp_gen=0;
 			plan_node->refzmp_list.push_back(Vector3d(0.0f,prev_refzmp[0], prev_refzmp[1]));
-			tP_B = next_torso_pos;
+			tP_B = next_torso_pos; //tth_B += torso_th;
 			while(1){
 				plan_node->getNextZMP(tP_B, tth_B);
 				if(plan_node->getWalkState() == STOP) break;
-				zmp_gent++;
-				if(ONE_STEP_THRE <= temp_count) plan_node->setStopFlag();
+				zmp_gen++;
+				if(ONE_STEP_THRE <= zmp_gen) plan_node->setStopFlag();
 				tP_B += Vector2d(torso_x, torso_y); tth_B += torso_th;
 			}
 
@@ -56,7 +56,7 @@ public:
 				outputzmp.push_back(temp_outputzmp.transpose());
 
 				preview_timer += dt;
-				if(count < max_step){
+				if(total_step < max_step){
 					if(gait_period <= preview_timer){
 						preview_timer = 0.0f;
 						break;
@@ -64,10 +64,10 @@ public:
 				}
 			}
 
-			prev_refzmp[0] = plan_node->refzmp_list[1][1] + (torso_x/2.0f);
+			prev_refzmp[0] = ((plan_node->refzmp_list[2][1]-plan_node->refzmp_list[1][1])/2.0)+plan_node->refzmp_list[1][1];//plan_node->refzmp_list[1][1] + (torso_x/2.0f);
 			prev_refzmp[1] = ((plan_node->refzmp_list[2][2]-plan_node->refzmp_list[1][2])/2.0)+plan_node->refzmp_list[1][2];
-			next_torso_pos[0] = torso_x * count;
-			next_torso_pos[1] = torso_y * count;
+			next_torso_pos[0] = torso_x * total_step;
+			next_torso_pos[1] = torso_y * total_step;
 			plan_node->buffer_clear();
 			preview_node->buffer_clear();
 
