@@ -32,5 +32,5 @@ target_link_libraries(PDController
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC")
 
-install(TARGETS PDController LIBRARY DESTINATION /usr/lib/choreonoid-1.5/rtc)
-install(FILES pdgain.txt ../JAXON_RTC.conf DESTINATION /usr/lib/choreonoid-1.5/rtc)
+install(TARGETS PDController LIBRARY DESTINATION /usr/lib/choreonoid-1.6/rtc)
+install(FILES pdgain.txt ../JAXON_RTC.conf DESTINATION /usr/lib/choreonoid-1.6/rtc)
